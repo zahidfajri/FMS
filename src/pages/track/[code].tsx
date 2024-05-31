@@ -35,12 +35,13 @@ export default function TrackIdPage({
         <Skeleton
           isLoaded={ticket.isFetched}
           borderRadius="10px"
+          maxW="880px"
+          w="100%"
         >
           <Stack
             borderRadius="10px"
             bgColor="white"
             spacing="20px"
-            maxW="880px"
             p="40px"
             w="100%"
           >
@@ -51,6 +52,8 @@ export default function TrackIdPage({
               name={ticket.data?.name ?? "loading"}
               attachment={ticket.data?.attachment}
               createdAt={ticket.data?.createdAt}
+              isSolved={ticket.data?.isSolved}
+              code={ticket.data?.code}
             />
 
             {ticket.data?.id && (

@@ -79,15 +79,17 @@ export default function AdminReplyPage({
                   name={ticket.data?.name ?? "loading"}
                   attachment={ticket.data?.attachment}
                   createdAt={ticket.data?.createdAt}
+                  isSolved={ticket.data?.isSolved}
+                  code={ticket.data?.code}
                 />
 
-                {ticket.data?.id && (
+                {(ticket.data?.id && !ticket.data.isSolved) ? (
                   <AddTicketProgress ticketId={ticket.data?.id} />
-                )}
+                ) : <></>}
 
-                {ticket.data?.id && (
+                {ticket.data?.id ? (
                   <TicketProgress ticketId={ticket.data?.id} />
-                )}
+                ) : <></>}
 
               </Stack>
 

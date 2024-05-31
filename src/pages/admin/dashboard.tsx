@@ -8,7 +8,7 @@ import { LS_SELECTED_DEPARTMENT } from "~/utils/constant";
 import { selectedDepartmentRecoil } from "~/utils/recoil";
 
 export default function AdminDashboardPage() {
-  isAuthWithRole("ADMIN", "/astraforger");
+  isAuthWithRole("ADMIN", "/admin");
 
   const [selectedDepartment, setSelectedDepartment] = useRecoilState(selectedDepartmentRecoil);
 

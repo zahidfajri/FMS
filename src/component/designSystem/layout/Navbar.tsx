@@ -51,7 +51,7 @@ export default function Navbar() {
           w="100%"
         >
           <Link
-            href={session.data?.id ? "/astraforger/dashboard" : "/"}
+            href={session.data?.id ? "/admin/dashboard" : "/"}
             passHref
           >
             <HStack>
@@ -162,7 +162,7 @@ export function NavbarAdmin() {
   async function onClickSignOut() {
     signOut({
       redirect: true,
-      callbackUrl: "/astraforger"
+      callbackUrl: "/admin"
     });
     return;
   };
@@ -190,9 +190,9 @@ export function NavbarAdmin() {
       <Spacer />
       {session.data?.user.role === "ADMIN" ? (
         <>
-          {router.pathname !== "/astraforger/dashboard" ? (
+          {router.pathname !== "/admin/dashboard" ? (
             <Link
-              href="/astraforger/dashboard"
+              href="/admin/dashboard"
               passHref
             >
               <Button

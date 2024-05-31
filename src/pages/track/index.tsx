@@ -31,21 +31,20 @@ export default function TrackPage() {
             textAlign="center"
             fontWeight={900}
           >
-            Pantau {" "}
+            Track Your Submitted{" "}
             <Text
               color="blue.500"
               as="span"
             >
-              Tiket{" "}
+              Ticket
             </Text>
-            Yang Kamu Kirim
           </Text>
           <Text
             {...fontStyle.body1medium}
             textAlign="center"
             color="gray.500"
           >
-            Enter Your Ticket Number Received From Email
+            Please enter the ticket number received in your email.
           </Text>
           <Flex />
           <Input

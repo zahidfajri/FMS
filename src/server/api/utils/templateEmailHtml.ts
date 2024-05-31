@@ -38,11 +38,25 @@ export async function sendReceiveTicketEmail(
 
 export async function sendAssignTicketEmail(
   email: string,
-  ticketId: number
+  name: string,
+  ticketId: number | string
 ) {
   const html = getTemplateEmail({
-    header: "Dear Techinician,",
+    header: `Dear ${name},`,
     body: `You have been assigned to ticket with ID #${ticketId}. Don't forget to follow up all your ticket.`,
+  });
+  const studentSubject = `Ticket Received!`;
+  await sendEmail(email, studentSubject, html);
+}
+
+export async function sendBulkAssignTicketEmail(
+  email: string,
+  name: string,
+  numberOfTickets: number
+) {
+  const html = getTemplateEmail({
+    header: `Dear ${name},`,
+    body: `You have been assigned ${numberOfTickets} ticket(s). Don't forget to follow up all your ticket.`,
   });
   const studentSubject = `Ticket Received!`;
   await sendEmail(email, studentSubject, html);
@@ -51,7 +65,7 @@ export async function sendAssignTicketEmail(
 export async function sendSolveTicketEmail(
   email: string,
   name: string,
-  ticketId: number
+  ticketId: number | string
 ) {
   const html = getTemplateEmail({
     header: "Your Issue Has Been Solved",
@@ -62,6 +76,6 @@ export async function sendSolveTicketEmail(
       link: `${process.env.NEXTAUTH_URL}/track/${ticketId}`,
     },
   });
-  const studentSubject = `Your Issue Has Been Replied #${ticketId}`;
+  const studentSubject = `Solved Issue #${ticketId}`;
   await sendEmail(email, studentSubject, html);
 }

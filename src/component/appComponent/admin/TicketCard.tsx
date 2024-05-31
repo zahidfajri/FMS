@@ -13,7 +13,7 @@ export default function TicketCard({
 }) {
   return (
     <Link
-      href={`/astraforger/ticket/${code}`}
+      href={`/admin/ticket/${code}`}
       passHref
     >
       <HStack

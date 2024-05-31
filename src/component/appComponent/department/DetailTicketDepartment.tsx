@@ -34,7 +34,7 @@ export default function DetailTicketDepartment({
       status: "success",
       position: "top",
     });
-    router.replace("/astraforger/dashboard");
+    router.replace("/admin/dashboard");
   }
   return (
     <Stack>

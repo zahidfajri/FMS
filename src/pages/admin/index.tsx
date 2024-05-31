@@ -11,7 +11,7 @@ export default function AdminLoginPage() {
       p="20px"
     >
       <SignInComponent
-        redirectSuccess="/astraforger/dashboard"
+        redirectSuccess="/admin/dashboard"
         isLoaded={session.status !== "loading"}
       />
     </Center>

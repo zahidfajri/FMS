@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import {
+  sendBulkAssignTicketEmail,
   sendCreateTicketEmail,
   sendReceiveTicketEmail,
   sendSolveTicketEmail,
@@ -317,6 +318,13 @@ export const ticketRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findFirst({
+        where: {
+          id: input.userId,
+        },
+      });
+      if (!user || !user.email || !user.name) throw new Error("Ticket doesn't exist");
+
       for (const ticketId of input.ticketIds) {
         const ticket = await ctx.prisma.ticket.update({
           where: {
@@ -328,6 +336,8 @@ export const ticketRouter = createTRPCRouter({
         });
         if (!ticket) throw new Error("Ticket doesn't exist");
       }
+
+      await sendBulkAssignTicketEmail(user.email, user.name, input.ticketIds.length);
       return true;
     }),
 });
