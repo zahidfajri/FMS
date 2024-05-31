@@ -1,4 +1,4 @@
-import { HStack, Image, Link, Stack, Tag, Text, Wrap } from "@chakra-ui/react";
+import { Image, Link, Stack, Tag, Text, Wrap } from "@chakra-ui/react";
 import moment from "moment";
 import { fontStyle } from "~/styles/fontStyle";
 
@@ -29,27 +29,29 @@ export default function TicketHeader({
             ID #{code}
           </Text>
         ) : <></>}
-        <HStack w="100%">
-          <Text
-            fontSize={["24px", "24px", "48px"]}
-            letterSpacing="0.0025em"
-            fontWeight={700}
+        {isSolved ? (
+          <Tag
+            {...fontStyle.captionBold}
+            colorScheme="green"
+            w="fit-content"
           >
-            {title}
-          </Text>
-          {isSolved ? (
-            <Tag
-              {...fontStyle.captionBold}
-              colorScheme="green"
-            >
-              SOLVED
-            </Tag>
-          ) : (
-            <Tag {...fontStyle.captionBold}>
-              IN PROGRESS
-            </Tag>
-          )}
-        </HStack>
+            SOLVED
+          </Tag>
+        ) : (
+          <Tag
+            {...fontStyle.captionBold}
+            w="fit-content"
+          >
+            IN PROGRESS
+          </Tag>
+        )}
+        <Text
+          fontSize={["24px", "24px", "48px"]}
+          letterSpacing="0.0025em"
+          fontWeight={700}
+        >
+          {title}
+        </Text>
         <Text {...fontStyle.heading6medium}>
           {subtitle || "Loading..."}
         </Text>

@@ -116,14 +116,6 @@ export default function NewTicketPage() {
           image: attachmentFile,
           name,
         });
-        toast({
-          title: "Upload Successful",
-          description: "Your image has been uploaded successfully.",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-          position: "top",
-        });
         attachment = response?.data?.image?.url ?? "";
       } catch (error) {
         toast({
