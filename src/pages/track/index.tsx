@@ -45,7 +45,7 @@ export default function TrackPage() {
             textAlign="center"
             color="gray.500"
           >
-            Masukkan kode tiket yang kamu dapatkan di email
+            Enter Your Ticket Number Received From Email
           </Text>
           <Flex />
           <Input
