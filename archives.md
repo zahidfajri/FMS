@@ -1,5 +1,7 @@
 BUG/ISSUE
 
+---
+
 (done) If already solved, admin should not be able to add another step
 
 (done) Show ticket number in admin page
@@ -12,7 +14,7 @@ BUG/ISSUE
 
 ??? Logo change to north port at browser tab in admin page
 
-(done) Solved Ticket number format on email is wrong  (wrong ID)
+(done) Solved Ticket number format on email is wrong (wrong ID)
 addon bulk assign ticket send email
 
 (done) Show solved at ticket tracker
@@ -21,11 +23,18 @@ addon bulk assign ticket send email
 
 (done) change project name to helpdesk.
 
+---
+
 error handling?
-	entering wrong value ticket
-	show error?
-	number just use 
+
+- entering wrong value ticket
+- show error?
+- number just use
 
 REPORT
 ERD of the database?
 Tech tools
+
+---
+
+(done) upload image fetch after submit
