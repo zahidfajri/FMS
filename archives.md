@@ -38,3 +38,29 @@ Tech tools
 ---
 
 (done) upload image fetch after submit
+
+(done) /astraforger jadi /admin
+
+bikin halaman dashboard department untuk bulk assign teknisi
+
+bikin halaman detail tiket and assign teknisi
+
+(done) bikin admin juga bisa assign teknisi
+bulk assign
+
+(done) bikin login teknisi
+
+teknisi ditambah nomor HP
+
+bikin dashboard teknisi
+
+bikin halaman detail tiket dan update progress
+
+bikin halaman report admin berbentuk tabel perbulan
+
+bikin report admin bisa filter by department
+
+(done) bikin mekanisme upload foto
+
+bikin update progress bisa upload foto
+
