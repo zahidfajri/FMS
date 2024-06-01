@@ -162,7 +162,7 @@ export function NavbarAdmin() {
   async function onClickSignOut() {
     signOut({
       redirect: true,
-      callbackUrl: "/admin"
+      callbackUrl: session.data?.user.role === "ADMIN" ? "/admin" : "/technician"
     });
     return;
   };
