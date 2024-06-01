@@ -1,9 +1,7 @@
 import { Center, } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import SignInComponent from "~/component/appComponent/SignInComponent";
 
 export default function AdminLoginPage() {
-  const session = useSession();
   return (
     <Center
       bgGradient="linear(to-l, blue.600, blue.300)"
@@ -12,7 +10,7 @@ export default function AdminLoginPage() {
     >
       <SignInComponent
         redirectSuccess="/admin/dashboard"
-        isLoaded={session.status !== "loading"}
+        title="Admin Login"
       />
     </Center>
   )

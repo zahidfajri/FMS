@@ -6,7 +6,7 @@ import { fontStyle } from "~/styles/fontStyle";
 import { useBooleanState } from "~/utils/hooks";
 
 export default function SignInComponent({
-  isLoaded,
+  isLoaded = true,
   redirectSuccess,
   title = "Login"
 }: {
@@ -78,6 +78,7 @@ export default function SignInComponent({
             </Text>
             <Input
               onChange={e => setEmail(e.target.value)}
+              name="username"
               value={email}
             />
           </Stack>
@@ -90,6 +91,7 @@ export default function SignInComponent({
               onChange={e => setPassword(e.target.value)}
               value={password}
               type="password"
+              name="password"
             />
           </Stack>
 
