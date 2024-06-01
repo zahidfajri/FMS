@@ -1,8 +1,9 @@
-import { Flex, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Flex, Link, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import Iconify from "../iconify";
 import { fontStyle } from "~/styles/fontStyle";
 import ModalUpdateProgress from "./ModalUpdateProgress";
 import moment from "moment";
+import cleanImgbbUrl from "~/utils/imgbb";
 
 export function TicketProgressStep({
   id,
@@ -11,6 +12,7 @@ export function TicketProgressStep({
   description,
   isGrantedUpdate = false,
   updatedAt,
+  attachment,
 }: {
   id: number;
   isInProgress?: boolean;
@@ -18,6 +20,7 @@ export function TicketProgressStep({
   description?: string;
   isGrantedUpdate?: boolean;
   updatedAt?: Date | null;
+  attachment?: string | null;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -78,6 +81,16 @@ export function TicketProgressStep({
               {description}
             </Text>
           ) : <></>}
+          {attachment ? (
+            <Link
+              onClick={e => e.stopPropagation()}
+              href={attachment}
+              fontWeight={700}
+              isExternal
+            >
+              Attached: {cleanImgbbUrl(attachment)}
+            </Link>
+          ) : <></>}
           {updatedAt ? (
             <Text {...fontStyle.captionMedium} color="gray.500">
               Updated at {moment(updatedAt).format("H:mm, on DD-MM-YYYY")}
@@ -88,6 +101,7 @@ export function TicketProgressStep({
 
       <ModalUpdateProgress
         currentDescription={description ?? ""}
+        currentAttachment={attachment ?? null}
         currentTitle={title}
         onClose={onClose}
         isOpen={isOpen}

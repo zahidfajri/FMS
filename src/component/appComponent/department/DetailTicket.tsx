@@ -11,12 +11,14 @@ export default function DetailTicket({
   type = null,
   isNotFetching = false,
   isSolved = false,
+  isTechnician = false,
 }: {
   ticketId: number;
   currentDepartmentId: number | null;
   type?: TicketType | null;
   isNotFetching?: boolean;
   isSolved?: boolean;
+  isTechnician?: boolean;
 }) {
 
   return (
@@ -38,12 +40,16 @@ export default function DetailTicket({
         type={type}
       />
 
-      <Divider />
 
-      <DetailTicketDepartment
-        currentDepartmentId={currentDepartmentId}
-        ticketId={ticketId}
-      />
+      {!isTechnician ? (
+        <>
+          <Divider />
+          <DetailTicketDepartment
+            currentDepartmentId={currentDepartmentId}
+            ticketId={ticketId}
+          />
+        </>
+      ) : <></>}
 
       <Divider />
 

@@ -1,21 +1,26 @@
 import { Center, SimpleGrid, Skeleton, Stack, Text } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { fontStyle } from "~/styles/fontStyle";
 import { api } from "~/utils/api";
-import TicketCard from "./TicketCard";
+import TechnicianTicketCard from "./TechnicianTicketCard";
 
-export default function UnassignedTicket() {
+export default function TechnicianTicket() {
+  const session = useSession();
 
-  const unassignedTicket = api.ticket.getUnassignedTicket.useQuery();
-  const displayedTicket = unassignedTicket.data ?? [];
+  const activeTicketsByTechnicianId = api.ticket.getActiveTicketsByTechnicianId.useQuery({
+    userId: session.data?.id as string,
+  });
+  const displayedTicket = activeTicketsByTechnicianId.data ?? [];
+
 
   return (
     <Stack>
       <Text {...fontStyle.heading6bold}>
-        Unassigned Ticket {!displayedTicket.length ? "" : `(${displayedTicket.length})`}
+        Your Active Ticket {!displayedTicket.length ? "" : `(${displayedTicket.length})`}
       </Text>
       {!displayedTicket.length ? (
         <Skeleton
-          isLoaded={unassignedTicket.isFetched}
+          isLoaded={activeTicketsByTechnicianId.isFetched}
           borderRadius="10px"
           w="100%"
         >
@@ -23,7 +28,7 @@ export default function UnassignedTicket() {
             w="100%"
             p="40px"
           >
-            No unassigned ticket yet. Stay tune when it comes!
+            No active ticket yet. Congrats!
           </Center>
         </Skeleton>
       ) : (
@@ -32,7 +37,7 @@ export default function UnassignedTicket() {
           spacing="20px"
         >
           {displayedTicket.map(ticket => (
-            <TicketCard
+            <TechnicianTicketCard
               subtitle={ticket.subtitle}
               title={ticket.title}
               code={ticket.code}

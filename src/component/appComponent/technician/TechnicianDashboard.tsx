@@ -1,7 +1,8 @@
-import { Box, Divider, Stack } from "@chakra-ui/react";
+import { Box, Divider, Flex, Stack } from "@chakra-ui/react";
 import { NavbarAdmin } from "~/component/designSystem/layout/Navbar";
 import MyDepartmentButton from "./MyDepartmentButton";
 import TechnicianHeader from "./TechnicianHeader";
+import TechnicianTicket from "./TechnicianTicket";
 
 export default function TechnicianDashboard() {
   return (
@@ -25,7 +26,9 @@ export default function TechnicianDashboard() {
         </Stack>
 
         {/* YOUR TICKET */}
-        
+        <TechnicianTicket />
+
+        <Flex />
 
       </Stack>
     </Box>

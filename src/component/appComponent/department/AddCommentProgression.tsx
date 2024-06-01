@@ -1,5 +1,7 @@
 import { Button, Flex, Input, Stack, Text, Textarea, useToast } from "@chakra-ui/react";
+import imgbbUpload from "imgbb-image-uploader";
 import { useState } from "react";
+import InputFile from "~/component/designSystem/input/file";
 import { fontStyle } from "~/styles/fontStyle";
 import { api } from "~/utils/api";
 import { useBooleanState } from "~/utils/hooks";
@@ -19,12 +21,13 @@ export default function AddTicketProgress({
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
 
   const [errorField, setErrorField] = useState<string[]>([]);
 
   async function onClickCreate() {
     let tempError: string[] = [];
-    if (title === "") tempError.push("subtitle");
+    if (title === "") tempError.push("title");
 
     if (tempError.length > 0) {
       setErrorField(tempError);
@@ -33,11 +36,37 @@ export default function AddTicketProgress({
 
     setErrorField([]);
     isCreating.set(true);
+    let attachment: null | string = null;
+    if (attachmentFile) {
+      window.onbeforeunload = () => 'You have unsaved changes!';
+      const name = `progress-attachment-${new Date().getTime()}`;
+      let response: any;
+      try {
+        response = await imgbbUpload({
+          key: process.env.NEXT_PUBLIC_IMGBB_CLIENT_API_KEY,
+          image: attachmentFile,
+          name,
+        });
+        attachment = response?.data?.image?.url ?? null;
+      } catch (error) {
+        toast({
+          title: "Upload Failed",
+          description: "Something went wrong while uploading the file.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
+        console.error("Failed to upload image to ImgBB:", error);
+      } finally {
+        window.onbeforeunload = null;
+      }
+    }
     const response = await fetchCreate.mutateAsync({
       description,
       title,
       ticketId,
-      attachment: undefined,
+      attachment,
       type: "SOLVE",
     })
     isCreating.set(false);
@@ -79,6 +108,11 @@ export default function AddTicketProgress({
             onChange={e => setDescription(e.target.value)}
             placeholder="Description (optional)"
             value={description}
+          />
+          <InputFile
+            buttonText="Attachment Image (optional)"
+            setValue={setAttachmentFile}
+            value={attachmentFile}
           />
           <Flex
             justify="end"

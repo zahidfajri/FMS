@@ -27,6 +27,7 @@ export default function TicketProgress({
         <TicketProgressStep
           description={comment.description ?? undefined}
           isInProgress={index === 0 && !isTicketSolved}
+          attachment={comment.attachment}
           updatedAt={comment.createdAt}
           title={comment.title}
           key={comment.id}

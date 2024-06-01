@@ -104,7 +104,7 @@ export default function NewTicketPage() {
     localStorage.setItem("lastreporter-email", email);
     isSubmitting.set(true);
 
-    let attachment = "";
+    let attachment: null | string = null;
     if (attachmentFile) {
       window.onbeforeunload = () => 'You have unsaved changes!';
 
@@ -116,7 +116,7 @@ export default function NewTicketPage() {
           image: attachmentFile,
           name,
         });
-        attachment = response?.data?.image?.url ?? "";
+        attachment = response?.data?.image?.url ?? null;
       } catch (error) {
         toast({
           title: "Upload Failed",

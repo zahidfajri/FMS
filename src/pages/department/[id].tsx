@@ -1,4 +1,4 @@
-import { Center } from "@chakra-ui/react";
+import { Center, Skeleton, Text } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
@@ -46,9 +46,17 @@ export default function DepartmentDashboardPage({
       p={["0px", "0px", "20px"]}
       minH="100svh"
     >
-      {isGrantedAccess ? (
-        <DepartmentDashboard />
-      ) : "YOU ARE NOT THE PIC"}
+      <Skeleton
+        isLoaded={department.isFetched && session.status !== "loading"}
+      >
+        {isGrantedAccess ? (
+          <DepartmentDashboard />
+        ) : (
+          <Text color="white">
+            YOU ARE NOT THE PIC
+          </Text>
+        )}
+      </Skeleton>
     </Center>
   )
 }

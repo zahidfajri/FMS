@@ -4,9 +4,11 @@ import { ChangeEvent, } from "react";
 export default function InputFile({
   value,
   setValue,
+  buttonText = "Upload Image",
 }: {
   value: File | null;
   setValue: (value: File | null) => void;
+  buttonText?: string;
 }) {
 
   async function onChange(e: ChangeEvent<HTMLInputElement>) {
@@ -27,7 +29,7 @@ export default function InputFile({
         as="label"
         htmlFor="file-upload"
       >
-        Upload Image
+        {buttonText}
       </Button>
       {value ? (
         <Text mt={2}>

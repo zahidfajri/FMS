@@ -41,7 +41,7 @@ Tech tools
 
 (done) /astraforger jadi /admin
 
-bikin halaman dashboard department untuk bulk assign teknisi
+(done) bikin halaman dashboard department untuk bulk assign teknisi
 
 bikin halaman detail tiket and assign teknisi
 
@@ -55,9 +55,9 @@ bulk assign
 (baru BE) teknisi ditambah nomor HP
 teknisi ditambah nomor HP
 
-bikin dashboard teknisi
+(done) bikin dashboard teknisi
 
-bikin halaman detail tiket dan update progress
+(done) bikin halaman detail tiket dan update progress
 
 bikin halaman report admin berbentuk tabel perbulan
 
@@ -65,5 +65,5 @@ bikin report admin bisa filter by department
 
 (done) bikin mekanisme upload foto
 
-bikin update progress bisa upload foto
+(done) bikin update progress bisa upload foto
 

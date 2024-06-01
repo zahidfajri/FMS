@@ -343,4 +343,21 @@ export const ticketRouter = createTRPCRouter({
       );
       return true;
     }),
+
+  getActiveTicketsByTechnicianId: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const tickets = await ctx.prisma.ticket.findMany({
+        where: {
+          userId: input.userId,
+          isSolved: false,
+        },
+      });
+
+      return tickets;
+    }),
 });
