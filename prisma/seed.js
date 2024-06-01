@@ -85,7 +85,7 @@ async function main() {
       },
     });
     if (createdObject) console.log(`${createdObject.name} created`);
-    if (createdObject.name === "IT Dpeartment") departmentId = createdObject.id;
+    if (createdObject.name === "IT Department") departmentId = createdObject.id;
   }
 
   const technician = await prisma.user.upsert({
