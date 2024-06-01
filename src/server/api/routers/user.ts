@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { hash } from "argon2";
+import { sendCreateTechnicianAccount } from "../utils/templateEmailHtml";
 
 export const userRouter = createTRPCRouter({
   getUserByDepartmentId: protectedProcedure
@@ -21,6 +22,7 @@ export const userRouter = createTRPCRouter({
         name: z.string().min(3).trim(),
         email: z.string().email(),
         password: z.string().min(8),
+        phoneNumber: z.string().optional().nullable(),
         departmentId: z.number(),
         isPIC: z.boolean(),
       })
@@ -35,11 +37,14 @@ export const userRouter = createTRPCRouter({
           departmentId: input.departmentId,
           password: await hash(input.password),
           username,
+          phoneNumber: input.phoneNumber,
           role: "TECHNICIAN",
         },
       });
 
       if (!user) throw new Error("Cannot create user");
+
+      await sendCreateTechnicianAccount(input.email, input.name, input.password);
 
       if (input.isPIC) {
         await ctx.prisma.department.update({

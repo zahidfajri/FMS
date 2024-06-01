@@ -57,9 +57,9 @@ export async function sendUnassignedTicketEmail(
     header: `Dear Admin,`,
     body: `An unassgined ticket has been created. Please assign it to a department from your dashboard.`,
     hyperlink: {
-      title: 'Dashboard URL:',
-      link: `${process.env.NEXTAUTH_URL}/admin/ticket/${ticketId}`
-    }
+      title: "Dashboard URL:",
+      link: `${process.env.NEXTAUTH_URL}/admin/ticket/${ticketId}`,
+    },
   });
   const studentSubject = `Ticket Received!`;
   await sendEmail(email, studentSubject, html);
@@ -93,5 +93,23 @@ export async function sendSolveTicketEmail(
     },
   });
   const studentSubject = `Solved Issue #${ticketId}`;
+  await sendEmail(email, studentSubject, html);
+}
+
+export async function sendCreateTechnicianAccount(
+  email: string,
+  name: string,
+  password: string
+) {
+  const html = getTemplateEmail({
+    header: "Account Successfully Created",
+    body: `Hi ${name}! Your email has been registered as a Technician on Northport Helpdesk. Here is your account's details,`,
+    addons: [`Email : ${email}`, `Password : ${password}`],
+    hyperlink: {
+      title: `See Northport Helpdesk,`,
+      link: `${process.env.NEXTAUTH_URL}/technician`,
+    },
+  });
+  const studentSubject = "Your Email Has Been Registered";
   await sendEmail(email, studentSubject, html);
 }

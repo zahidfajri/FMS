@@ -43,8 +43,8 @@ export default function DepartmentDashboardPage({
   return (
     <Center
       bgGradient="linear(to-l, blue.600, blue.300)"
+      p={["0px", "0px", "20px"]}
       minH="100svh"
-      p="20px"
     >
       {isGrantedAccess ? (
         <DepartmentDashboard />

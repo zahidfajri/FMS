@@ -37,6 +37,7 @@ export default function ModalCreateTechnician({
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState(generateRandomPassword());
   const [isPIC, setIsPIC] = useState("no");
 
@@ -47,6 +48,7 @@ export default function ModalCreateTechnician({
 
     if (name.length < 3) temp.push("name");
     if (email.length < 3 || !email.includes("@")) temp.push("email");
+    if (phoneNumber.length < 3) temp.push("phoneNumber");
     if (password.length < 8) {
       toast({
         title: "Input Invalid!",
@@ -71,6 +73,7 @@ export default function ModalCreateTechnician({
         password,
         departmentId,
         isPIC: isPIC === "yes",
+        phoneNumber: phoneNumber ?? null,
       })
     } catch (e) {
       console.error(e)
@@ -128,6 +131,18 @@ export default function ModalCreateTechnician({
                   onChange={e => setEmail(e.target.value)}
                   placeholder="saiful@email.com"
                   value={email}
+                />
+              </Stack>
+              <Stack>
+                <Text fontWeight={500}>
+                  Phone Number (optional)
+                </Text>
+                <Input
+                  isInvalid={errorField.includes("phoneNumber")}
+                  onChange={e => setPhoneNumber(e.target.value)}
+                  placeholder="+6081234567890"
+                  value={email}
+                  type="tel"
                 />
               </Stack>
               <Stack>

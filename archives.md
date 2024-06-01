@@ -50,6 +50,9 @@ bulk assign
 
 (done) bikin login teknisi
 
+(done) teknisi dapet email kalau abis dibuatin akun
+
+(baru BE) teknisi ditambah nomor HP
 teknisi ditambah nomor HP
 
 bikin dashboard teknisi
