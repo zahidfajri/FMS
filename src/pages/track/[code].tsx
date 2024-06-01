@@ -58,6 +58,8 @@ export default function TrackIdPage({
 
             {ticket.data?.id && (
               <GuestTicketProgress
+                isTicketSolved={ticket.data.isSolved}
+                createdAt={ticket.data.createdAt}
                 ticketId={ticket.data?.id}
               />
             )}

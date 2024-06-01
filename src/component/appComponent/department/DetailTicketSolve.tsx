@@ -1,4 +1,4 @@
-import { Button, HStack, Stack, Text, useToast } from "@chakra-ui/react";
+import { Button, Stack, Text, useToast } from "@chakra-ui/react";
 import { fontStyle } from "~/styles/fontStyle";
 import { api } from "~/utils/api";
 import { useBooleanState } from "~/utils/hooks";
@@ -35,7 +35,7 @@ export default function DetailTicketSolve({
   }
 
   return (
-    <HStack>
+    <Stack direction={["column", "column", "row"]}>
       <Stack w="100%">
         <Text {...fontStyle.body1bold}>
           Solved Status
@@ -46,14 +46,14 @@ export default function DetailTicketSolve({
       </Stack>
       <Button
         isLoading={!isNotFetching || isMarking.get}
+        w={["100%", "100%", "147px"]}
         isDisabled={isSolved}
         onClick={onClickMark}
         colorScheme="blue"
         flexShrink={0}
-        w="147px"
       >
         {isSolved ? "Solved ✓" : "Mark as Solved"}
       </Button>
-    </HStack>
+    </Stack>
   )
 }

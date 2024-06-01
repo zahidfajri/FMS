@@ -8,13 +8,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  SimpleGrid,
   Stack,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import SoftCheckbox from "~/component/designSystem/checkbox/soft";
 import { api } from "~/utils/api";
 import { useBooleanState } from "~/utils/hooks";
 
@@ -23,14 +21,12 @@ export default function ModalUpdateProgress({
   onClose,
   currentTitle,
   currentDescription,
-  isDone,
   commentId,
 }: {
   isOpen: boolean;
   onClose: () => void;
   currentTitle: string;
   currentDescription: string;
-  isDone: boolean;
   commentId: number;
 }) {
   const toast = useToast();
@@ -41,7 +37,6 @@ export default function ModalUpdateProgress({
   const isSaving = useBooleanState();
   const [title, setTitle] = useState(currentTitle);
   const [description, setDescription] = useState(currentDescription);
-  const [status, setStatus] = useState(isDone ? "DONE" : "UNDONE");
 
   async function onClickSave() {
     isSaving.set(true);
@@ -49,7 +44,6 @@ export default function ModalUpdateProgress({
       commentId,
       title,
       description,
-      isDone: status === "DONE",
     });
     isSaving.set(false);
     if (!response?.id) return;
@@ -85,21 +79,6 @@ export default function ModalUpdateProgress({
               placeholder="Description of step (optional)"
               value={description}
             />
-            <SimpleGrid
-              spacing="10px"
-              columns={2}
-            >
-              <SoftCheckbox
-                onClick={() => setStatus("UNDONE")}
-                isActive={status === "UNDONE"}
-                title="Not yet done"
-              />
-              <SoftCheckbox
-                onClick={() => setStatus("DONE")}
-                isActive={status === "DONE"}
-                title="Done"
-              />
-            </SimpleGrid>
           </Stack>
         </ModalBody>
         <ModalFooter>

@@ -49,21 +49,22 @@ enum Role {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
-  username      String    @unique
+  email         String?     @unique
+  username      String      @unique
+  role          Role        @default(USER)
   password      String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  // Default
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
   emailVerified DateTime?
-  image         String?
-  role          Role      @default(USER)
-
-  departmentId Int?
-  department   Department? @relation(fields: [departmentId], references: [id])
-
-  ticket Ticket[]
+  // Technician
+  phoneNumber   String?
+  // Relation
+  departmentId  Int?
+  department    Department? @relation(fields: [departmentId], references: [id])
+  ticket        Ticket[]
 
   accounts Account[]
   sessions Session[]
@@ -81,14 +82,14 @@ model VerificationToken {
 }
 
 model Department {
-  id          Int    @id @default(autoincrement())
-  name        String @unique
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
   description String
-
-  emailPic String?
-
-  ticket Ticket[]
-  user   User[]
+  // Contact Person
+  emailPic    String?
+  // Relation
+  ticket      Ticket[]
+  user        User[]
 }
 
 enum TicketType {
@@ -100,22 +101,21 @@ enum TicketType {
 
 model Ticket {
   // Identity
-  id                          Int         @id @default(autoincrement())
-  email                       String
-  name                        String
-  title                       String
-  subtitle                    String
-  attachment                  String?
-  type                        TicketType?
-  code                        String      @unique
+  id         Int         @id @default(autoincrement())
+  email      String
+  name       String
+  title      String
+  subtitle   String
+  attachment String?
+  type       TicketType?
+  code       String      @unique
   // Default
-  createdAt                   DateTime    @default(now())
-  updatedAt                   DateTime    @updatedAt
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
   // Detail
-  lastTechnicianUpdateComment DateTime    @default(now())
-  isSolved                    Boolean     @default(false)
+  isSolved   Boolean     @default(false)
   // Comment
-  comment                     Comment[]
+  comment    Comment[]
 
   // Department
   departmentId Int?
@@ -136,17 +136,15 @@ enum CommentType {
 }
 
 model Comment {
-  id                Int         @id @default(autoincrement())
-  createdAt         DateTime    @default(now())
-  title             String
-  description       String?
-  attachment        String?
-  type              CommentType @default(QUESTION)
-  isDone            Boolean     @default(false)
-  doneAt            DateTime?
-  isTechnicianReply Boolean     @default(false)
-  ticket            Ticket      @relation(fields: [ticketId], references: [id])
-  ticketId          Int
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now()) @updatedAt
+  title       String
+  description String?
+  attachment  String?
+  type        CommentType @default(QUESTION)
+  ticket      Ticket      @relation(fields: [ticketId], references: [id])
+  ticketId    Int
 
   @@index([ticketId])
 }

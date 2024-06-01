@@ -1,6 +1,6 @@
 import { Image, Link, Stack, Tag, Text, Wrap } from "@chakra-ui/react";
 import moment from "moment";
-import { fontStyle } from "~/styles/fontStyle";
+import { fontStyle, responsiveFontStyle } from "~/styles/fontStyle";
 
 export default function TicketHeader({
   title,
@@ -52,7 +52,9 @@ export default function TicketHeader({
         >
           {title}
         </Text>
-        <Text {...fontStyle.heading6medium}>
+        <Text
+          {...responsiveFontStyle(fontStyle.body1medium, fontStyle.heading6medium)}
+        >
           {subtitle || "Loading..."}
         </Text>
       </Stack>

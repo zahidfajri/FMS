@@ -41,7 +41,7 @@ export default function ManageDepartment() {
         </Skeleton>
       ) : (
         <SimpleGrid
-          columns={[2, 3, 4]}
+          columns={[1, 2, 4]}
           spacing="20px"
         >
           {departments.data.map(department => (

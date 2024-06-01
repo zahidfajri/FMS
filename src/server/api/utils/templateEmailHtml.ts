@@ -49,6 +49,22 @@ export async function sendAssignTicketEmail(
   await sendEmail(email, studentSubject, html);
 }
 
+export async function sendUnassignedTicketEmail(
+  email: string,
+  ticketId: number | string
+) {
+  const html = getTemplateEmail({
+    header: `Dear Admin,`,
+    body: `An unassgined ticket has been created. Please assign it to a department from your dashboard.`,
+    hyperlink: {
+      title: 'Dashboard URL:',
+      link: `${process.env.NEXTAUTH_URL}/admin/ticket/${ticketId}`
+    }
+  });
+  const studentSubject = `Ticket Received!`;
+  await sendEmail(email, studentSubject, html);
+}
+
 export async function sendBulkAssignTicketEmail(
   email: string,
   name: string,

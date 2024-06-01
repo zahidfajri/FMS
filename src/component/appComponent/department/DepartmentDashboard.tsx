@@ -13,12 +13,12 @@ export default function DepartmentDashboard() {
   return (
     <>
       <Box
-        px={["20px", "20px", "40px"]}
+        px={["0px", "0px", "40px"]}
         w="100%"
       >
         <Stack
           p={["10px 20px", "10px 20px", "20px 40px"]}
-          borderRadius="10px"
+          borderRadius={["0px", "0px", "10px"]}
           bgColor="white"
           spacing="40px"
           w="100%"
