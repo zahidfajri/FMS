@@ -88,7 +88,7 @@ async function main() {
     if (createdObject.name === "IT Department") departmentId = createdObject.id;
   }
 
-  const technician = await prisma.user.upsert({
+  const technicianPIC = await prisma.user.upsert({
     where: {
       email: "frost.75.asafarhan@gmail.com",
     },
@@ -97,6 +97,22 @@ async function main() {
       email: "frost.75.asafarhan@gmail.com",
       username: "asa-it",
       name: "Asa IT",
+      password: await hash("abcde123"),
+      role: "TECHNICIAN",
+      departmentId,
+    },
+  });
+  if (technicianPIC) console.log(`${technicianPIC.name} created`);
+
+  const technician = await prisma.user.upsert({
+    where: {
+      email: "asamuhammadfarhan@student.uns.ac.id",
+    },
+    update: {},
+    create: {
+      email: "asamuhammadfarhan@student.uns.ac.id",
+      username: "asa-it-coworker",
+      name: "Asa IT Coworker",
       password: await hash("abcde123"),
       role: "TECHNICIAN",
       departmentId,
