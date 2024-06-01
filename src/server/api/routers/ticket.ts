@@ -222,7 +222,7 @@ export const ticketRouter = createTRPCRouter({
       if (!ticket) return null;
 
       if (input.isSolved) {
-        await sendSolveTicketEmail(ticket.email, ticket.name || "", ticket.id);
+        await sendSolveTicketEmail(ticket.email, ticket.name || "", ticket.code);
       }
 
       return ticket;
@@ -261,7 +261,7 @@ export const ticketRouter = createTRPCRouter({
         });
         if (!comment) return null;
 
-        await sendCreateTicketEmail(ticket.email, ticket.name || "", ticket.id);
+        await sendCreateTicketEmail(ticket.email, ticket.name || "", ticket.code);
 
         return await ctx.prisma.ticket.update({
           where: {
