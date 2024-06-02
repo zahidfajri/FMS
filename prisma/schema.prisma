@@ -114,6 +114,7 @@ model Ticket {
   updatedAt  DateTime    @updatedAt
   // Detail
   isSolved   Boolean     @default(false)
+  solvedAt   DateTime?
   // Comment
   comment    Comment[]
 

@@ -18,7 +18,7 @@ export default function ManageTechnician({
     <Stack>
       <HStack justify="space-between" w="100%">
         <Text {...fontStyle.heading6bold}>
-          Technicians
+          Technician List
         </Text>
         <ModalCreateTechnician departmentId={departmentId} />
       </HStack>

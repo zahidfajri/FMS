@@ -43,7 +43,7 @@ Tech tools
 
 (done) bikin halaman dashboard department untuk bulk assign teknisi
 
-bikin halaman detail tiket and assign teknisi
+(mvp) bikin halaman detail tiket and assign teknisi
 
 (done) bikin admin juga bisa assign teknisi
 bulk assign
@@ -59,9 +59,9 @@ teknisi ditambah nomor HP
 
 (done) bikin halaman detail tiket dan update progress
 
-bikin halaman report admin berbentuk tabel perbulan
-
-bikin report admin bisa filter by department
+(defect) bikin report admin bisa filter by department
+(defect) bikin halaman report admin berbentuk tabel perbulan
+(done) admin open department and download csv there
 
 (done) bikin mekanisme upload foto
 

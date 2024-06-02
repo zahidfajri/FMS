@@ -18,12 +18,9 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRecoilState, } from "recoil";
 import Iconify from "~/component/appComponent/iconify";
 import ImageWithSkeleton from "~/component/appComponent/imageComponents";
 import { fontStyle } from "~/styles/fontStyle";
-import { LS_SELECTED_DEPARTMENT } from "~/utils/constant";
-import { selectedDepartmentRecoil } from "~/utils/recoil";
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,26 +47,21 @@ export default function Navbar() {
           maxW="1000px"
           w="100%"
         >
-          <Link
-            href={session.data?.id ? "/admin/dashboard" : "/"}
-            passHref
-          >
-            <HStack>
-              <ImageWithSkeleton
-                src="/northport-icon.png"
-                alt="northport icon"
-                height="40px"
-                width="40px"
-              />
-              <Box
-                {...fontStyle.heading5bold}
-                letterSpacing="0.5px"
-                color="blue.600"
-              >
-                Helpdesk
-              </Box>
-            </HStack>
-          </Link>
+          <HStack>
+            <ImageWithSkeleton
+              src="/northport-icon.png"
+              alt="northport icon"
+              height="40px"
+              width="40px"
+            />
+            <Box
+              {...fontStyle.heading5bold}
+              letterSpacing="0.5px"
+              color="blue.600"
+            >
+              Helpdesk
+            </Box>
+          </HStack>
           <Spacer />
           <Show above="lg">
             <Link
@@ -97,6 +89,22 @@ export default function Navbar() {
                 track
               </Button>
             </Link>
+            {session.data?.user ? (
+              <Link
+                href={session.data.user.role === "ADMIN" ? "/admin/dashboard" : "/technician/dashboard"}
+                passHref
+              >
+                <Button
+                  colorScheme="blue"
+                  bgColor="blue.50"
+                  variant="outline"
+                  size="sm"
+                  p="10px"
+                >
+                  dashboard
+                </Button>
+              </Link>
+            ) : <></>}
           </Show>
           <Show below="lg">
             <Button onClick={onOpen}>
@@ -166,12 +174,6 @@ export function NavbarAdmin() {
     });
     return;
   };
-  const [selectedDepartment, setSelectedDepartment] = useRecoilState(selectedDepartmentRecoil);
-
-  function onClickBackToAdmin() {
-    setSelectedDepartment(null);
-    localStorage.removeItem(LS_SELECTED_DEPARTMENT);
-  }
 
   return (
     <HStack>
@@ -204,21 +206,7 @@ export function NavbarAdmin() {
                 Dashboard
               </Button>
             </Link>
-          ) : (
-            <>
-              {selectedDepartment ? (
-                <Button
-                  onClick={onClickBackToAdmin}
-                  colorScheme="cyan"
-                  bgColor="cyan.50"
-                  variant="outline"
-                  size="xs"
-                >
-                  Open Admin
-                </Button>
-              ) : <></>}
-            </>
-          )}
+          ) : <></>}
         </>
       ) : <></>}
       <Button

@@ -94,6 +94,25 @@ export const ticketRouter = createTRPCRouter({
       return count;
     }),
 
+  getTicketsByDepartmentId: protectedProcedure
+    .input(
+      z.object({
+        departmentId: z.number(),
+        monthCode: z.string().max(2),
+        yearCode: z.string().max(2),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.ticket.findMany({
+        where: {
+          departmentId: input.departmentId,
+          code: {
+            startsWith: `${input.yearCode}${input.monthCode}`,
+          },
+        },
+      });
+    }),
+
   createTicket: publicProcedure
     .input(
       z.object({
@@ -217,12 +236,17 @@ export const ticketRouter = createTRPCRouter({
         },
         data: {
           isSolved: input.isSolved,
+          solvedAt: new Date(),
         },
       });
       if (!ticket) return null;
 
       if (input.isSolved) {
-        await sendSolveTicketEmail(ticket.email, ticket.name || "", ticket.code);
+        await sendSolveTicketEmail(
+          ticket.email,
+          ticket.name || "",
+          ticket.code
+        );
       }
 
       return ticket;
@@ -261,7 +285,11 @@ export const ticketRouter = createTRPCRouter({
         });
         if (!comment) return null;
 
-        await sendCreateTicketEmail(ticket.email, ticket.name || "", ticket.code);
+        await sendCreateTicketEmail(
+          ticket.email,
+          ticket.name || "",
+          ticket.code
+        );
 
         return await ctx.prisma.ticket.update({
           where: {

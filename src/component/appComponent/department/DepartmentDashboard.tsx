@@ -5,8 +5,13 @@ import { useRecoilValue } from "recoil";
 import { selectedDepartmentRecoil } from "~/utils/recoil";
 import ActiveTicket from "./ActiveTicket";
 import ManageTechnician from "./ManageTechnician";
+import DepartmentAnalytics from "./DepartmentAnalytics";
 
-export default function DepartmentDashboard() {
+export default function DepartmentDashboard({
+  id,
+}: {
+  id: number;
+}) {
 
   const department = useRecoilValue(selectedDepartmentRecoil);
 
@@ -31,7 +36,7 @@ export default function DepartmentDashboard() {
               letterSpacing="0.0025em"
               fontWeight={700}
             >
-              {department?.name}.
+              {department?.name}
             </Text>
             <Text
               {...fontStyle.body1semibold}
@@ -40,6 +45,8 @@ export default function DepartmentDashboard() {
               Watch progression of department ticket.
             </Text>
           </Stack>
+
+          <DepartmentAnalytics id={id} />
 
           <Divider />
 
