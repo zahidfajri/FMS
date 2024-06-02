@@ -97,9 +97,9 @@ export default function DepartmentAnalytics({
             height: "fit-content",
             width: "fit-content",
           }}
+          filename={`report-${department?.name ?? "unknown"}-${yearCode}${monthCode}.csv"`}
           headers={header}
           data={body}
-          filename={`report-{}.csv"`}
         >
           <Button
             isDisabled={tickets.isFetching}
