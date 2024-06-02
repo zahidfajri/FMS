@@ -7,7 +7,7 @@ export default function MyDepartmentButton() {
   const session = useSession();
 
   const myDepartment = api.department.myDepartment.useQuery({
-    userId: session.data?.id as string,
+    userId: session.data?.id ?? "",
   });
 
   const departmetLink = `/department/${myDepartment.data?.id}`;

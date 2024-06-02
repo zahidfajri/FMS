@@ -8,11 +8,12 @@ BUG/ISSUE
 
 (done) Show ticket number in track page
 
-(deleted) Check ticket flow? (progress not in order)
+(checked and done) Check ticket flow? (progress not in order)
 
 (done) Track ticket page still in Indonesian
 
-??? Logo change to north port at browser tab in admin page
+(???) Logo change to north port at browser tab in admin page
+followup by delete favicon.ico
 
 (done) Solved Ticket number format on email is wrong (wrong ID)
 addon bulk assign ticket send email
@@ -59,11 +60,32 @@ teknisi ditambah nomor HP
 
 (done) bikin halaman detail tiket dan update progress
 
-(defect) bikin report admin bisa filter by department
-(defect) bikin halaman report admin berbentuk tabel perbulan
 (done) admin open department and download csv there
 
 (done) bikin mekanisme upload foto
 
 (done) bikin update progress bisa upload foto
 
+--- 1/6/24
+
+(done) admin attached picture not showing up on user ticket tracker
+
+(done) admin image attachment cant be removed unless page refreshed first
+
+(done) should be written in ticket steps of who give updates, admin or technician
+
+(???, 15 days) web access for admin/technician timeout time? (is this question?)
+
+(done) show ticket type at ticket tracker
+
+(done) phone number? not really sure.
+
+(done) on admin dashboard, (which is really cool now) the report of total ticket received, other than percentage, can show the exact number?
+
+(done) no back button from current ticket to see all ticket from technician (not pic)
+
+(???) remove icon template wkwkwkwk
+
+(done) file cvs download error?
+
+(done, yes) does technician receive email once he/she got assigned?

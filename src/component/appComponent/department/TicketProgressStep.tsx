@@ -12,6 +12,7 @@ export function TicketProgressStep({
   description,
   isGrantedUpdate = false,
   updatedAt,
+  createdBy,
   attachment,
 }: {
   id: number;
@@ -20,6 +21,7 @@ export function TicketProgressStep({
   description?: string;
   isGrantedUpdate?: boolean;
   updatedAt?: Date | null;
+  createdBy?: string | null;
   attachment?: string | null;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -93,7 +95,14 @@ export function TicketProgressStep({
           ) : <></>}
           {updatedAt ? (
             <Text {...fontStyle.captionMedium} color="gray.500">
-              Updated at {moment(updatedAt).format("H:mm, on DD-MM-YYYY")}
+              {createdBy ?
+                `By ${createdBy}`
+                : ""
+              }
+              {updatedAt
+                ? `${!createdBy ? "Updated" : ""} at ${moment(updatedAt).format("H:mm, on DD-MM-YYYY")}`
+                : ""
+              }
             </Text>
           ) : <></>}
         </Stack>

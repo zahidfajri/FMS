@@ -81,6 +81,7 @@ export default function AdminReplyPage({
                   createdAt={ticket.data?.createdAt}
                   isSolved={ticket.data?.isSolved}
                   code={ticket.data?.code}
+                  type={ticket.data?.type}
                 />
 
                 {(ticket.data?.id && !ticket.data.isSolved) ? (

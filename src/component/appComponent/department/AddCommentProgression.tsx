@@ -1,5 +1,6 @@
 import { Button, Flex, Input, Stack, Text, Textarea, useToast } from "@chakra-ui/react";
 import imgbbUpload from "imgbb-image-uploader";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import InputFile from "~/component/designSystem/input/file";
 import { fontStyle } from "~/styles/fontStyle";
@@ -12,6 +13,7 @@ export default function AddTicketProgress({
   ticketId: number;
 }) {
   const toast = useToast();
+  const session = useSession();
 
   const isCreateMode = useBooleanState();
 
@@ -67,7 +69,7 @@ export default function AddTicketProgress({
       title,
       ticketId,
       attachment,
-      type: "SOLVE",
+      createBy: session.data?.user.name,
     })
     isCreating.set(false);
     if (!response?.id) {
@@ -81,6 +83,7 @@ export default function AddTicketProgress({
     });
     setTitle("");
     setDescription("");
+    setAttachmentFile(null);
     query.invalidate();
   }
 

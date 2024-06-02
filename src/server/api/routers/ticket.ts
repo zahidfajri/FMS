@@ -280,7 +280,6 @@ export const ticketRouter = createTRPCRouter({
             title: `Assigned to Department ${departmentDestination.name}`,
             ticketId: ticket.id,
             attachment: undefined,
-            type: "SOLVE",
           },
         });
         if (!comment) return null;
@@ -320,7 +319,6 @@ export const ticketRouter = createTRPCRouter({
             title: `Move to Department ${departmentDestination.name}`,
             ticketId: ticket.id,
             attachment: undefined,
-            type: "SOLVE",
           },
         });
         if (!comment) return null;

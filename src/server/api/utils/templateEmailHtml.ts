@@ -44,6 +44,10 @@ export async function sendAssignTicketEmail(
   const html = getTemplateEmail({
     header: `Dear ${name},`,
     body: `You have been assigned to ticket with ID #${ticketCode}. Don't forget to follow up all your ticket.`,
+    hyperlink: {
+      title: "Dashboard URL:",
+      link: `${process.env.NEXTAUTH_URL}/technician/dashboard`,
+    },
   });
   const studentSubject = `Ticket Received!`;
   await sendEmail(email, studentSubject, html);
@@ -73,6 +77,10 @@ export async function sendBulkAssignTicketEmail(
   const html = getTemplateEmail({
     header: `Dear ${name},`,
     body: `You have been assigned ${numberOfTickets} ticket(s). Don't forget to follow up all your ticket.`,
+    hyperlink: {
+      title: "Dashboard URL:",
+      link: `${process.env.NEXTAUTH_URL}/technician/dashboard`,
+    },
   });
   const studentSubject = `Ticket Received!`;
   await sendEmail(email, studentSubject, html);

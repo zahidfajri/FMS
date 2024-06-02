@@ -54,6 +54,7 @@ export default function TrackIdPage({
               createdAt={ticket.data?.createdAt}
               isSolved={ticket.data?.isSolved}
               code={ticket.data?.code}
+              type={ticket.data?.type}
             />
 
             {ticket.data?.id && (

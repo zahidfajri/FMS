@@ -1,5 +1,5 @@
 import { Button, Select, Skeleton, Stack, Text, Wrap, WrapItem } from "@chakra-ui/react";
-import { fontStyle, roundedNumber } from "@dbb-id/standarization";
+import { fontStyle } from "@dbb-id/standarization";
 import { useState } from "react";
 import { api } from "~/utils/api";
 import { monthsName, yearsStock } from "~/utils/date";
@@ -37,25 +37,25 @@ export default function DepartmentAnalytics({
       title: "INQUIRY",
       bgColor: "blue.500",
       total: totalInquiry,
-      percentage: roundedNumber((totalInquiry / totalTicket) * 100, 2),
+      // percentage: roundedNumber((totalInquiry / totalTicket) * 100, 2),
     },
     {
       title: "COMPLAINT",
       bgColor: "red.500",
       total: totalComplaint,
-      percentage: roundedNumber((totalComplaint / totalTicket) * 100, 2),
+      // percentage: roundedNumber((totalComplaint / totalTicket) * 100, 2),
     },
     {
       title: "SUGGESTION",
       bgColor: "yellow.500",
       total: totalSuggestion,
-      percentage: roundedNumber((totalSuggestion / totalTicket) * 100, 2),
+      // percentage: roundedNumber((totalSuggestion / totalTicket) * 100, 2),
     },
     {
       title: "COMPLIMENT",
       bgColor: "green.500",
       total: totalCompliment,
-      percentage: roundedNumber((totalCompliment / totalTicket) * 100, 2),
+      // percentage: roundedNumber((totalCompliment / totalTicket) * 100, 2),
     },
   ];
 
@@ -154,7 +154,12 @@ export default function DepartmentAnalytics({
                 w="100%"
               >
                 <Text {...fontStyle.heading4extrabold}>
-                  {data.percentage}%
+                  {data.total} <Text as="span" {...fontStyle.body1regular}>
+                    / {totalTicket}
+                  </Text>
+                </Text>
+                <Text {...fontStyle.body1regular}>
+                  monthly ticket are
                 </Text>
                 <Text
                   {...fontStyle.body1bold}

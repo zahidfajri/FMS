@@ -8,7 +8,7 @@ export default function TechnicianTicket() {
   const session = useSession();
 
   const activeTicketsByTechnicianId = api.ticket.getActiveTicketsByTechnicianId.useQuery({
-    userId: session.data?.id as string,
+    userId: session.data?.id ?? "",
   });
   const displayedTicket = activeTicketsByTechnicianId.data ?? [];
 

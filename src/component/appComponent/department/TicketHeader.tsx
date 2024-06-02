@@ -1,4 +1,4 @@
-import { Image, Link, Stack, Tag, Text, Wrap } from "@chakra-ui/react";
+import { Image, Link, Stack, Tag, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import moment from "moment";
 import { fontStyle, responsiveFontStyle } from "~/styles/fontStyle";
 
@@ -11,6 +11,7 @@ export default function TicketHeader({
   attachment,
   code,
   isSolved,
+  type,
 }: {
   title: string;
   subtitle: string;
@@ -20,7 +21,17 @@ export default function TicketHeader({
   attachment: string | null | undefined;
   code: string | undefined;
   isSolved: boolean | undefined;
+  type: string | undefined | null;
 }) {
+
+  function colorBasedOnType() {
+    if (type === "INQUIRY") return "blue"
+    if (type === "COMPLAINT") return "red"
+    if (type === "SUGGESTION") return "yellow"
+    if (type === "COMPLIMENT") return "green"
+  }
+  const colorSchemeTicket = colorBasedOnType();
+
   return (
     <>
       <Stack spacing="20px">
@@ -29,22 +40,35 @@ export default function TicketHeader({
             ID #{code}
           </Text>
         ) : <></>}
-        {isSolved ? (
-          <Tag
-            {...fontStyle.captionBold}
-            colorScheme="green"
-            w="fit-content"
-          >
-            SOLVED
-          </Tag>
-        ) : (
-          <Tag
-            {...fontStyle.captionBold}
-            w="fit-content"
-          >
-            IN PROGRESS
-          </Tag>
-        )}
+        <Wrap>
+          <WrapItem>
+            {isSolved ? (
+              <Tag
+                {...fontStyle.captionBold}
+                colorScheme="green"
+                w="fit-content"
+              >
+                SOLVED
+              </Tag>
+            ) : (
+              <Tag
+                {...fontStyle.captionBold}
+                w="fit-content"
+              >
+                IN PROGRESS
+              </Tag>
+            )}
+          </WrapItem>
+          <WrapItem>
+            <Tag
+              colorScheme={colorSchemeTicket}
+              {...fontStyle.captionBold}
+              w="fit-content"
+            >
+              {type}
+            </Tag>
+          </WrapItem>
+        </Wrap>
         <Text
           fontSize={["24px", "24px", "48px"]}
           letterSpacing="0.0025em"

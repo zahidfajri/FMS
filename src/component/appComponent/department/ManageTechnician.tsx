@@ -42,6 +42,7 @@ export default function ManageTechnician({
         >
           {technicians.data.map(technician => (
             <TechnicianCard
+              phoneNumber={technician.phoneNumber ?? ""}
               email={technician.email}
               name={technician.name}
               key={technician.id}

@@ -29,6 +29,7 @@ export default function TicketProgress({
           isInProgress={index === 0 && !isTicketSolved}
           attachment={comment.attachment}
           updatedAt={comment.createdAt}
+          createdBy={comment.createBy}
           title={comment.title}
           key={comment.id}
           isGrantedUpdate

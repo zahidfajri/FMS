@@ -190,25 +190,22 @@ export function NavbarAdmin() {
         color="gray.400"
       />
       <Spacer />
-      {session.data?.user.role === "ADMIN" ? (
-        <>
-          {router.pathname !== "/admin/dashboard" ? (
-            <Link
-              href="/admin/dashboard"
-              passHref
-            >
-              <Button
-                colorScheme="blue"
-                bgColor="blue.50"
-                variant="outline"
-                size="xs"
-              >
-                Dashboard
-              </Button>
-            </Link>
-          ) : <></>}
-        </>
+      {(router.pathname !== "/admin/dashboard" && router.pathname !== "/technician/dashboard") ? (
+        <Link
+          href={session.data?.user.role === "ADMIN" ? "/admin/dashboard" : "/technician/dashboard"}
+          passHref
+        >
+          <Button
+            colorScheme="blue"
+            bgColor="blue.50"
+            variant="outline"
+            size="xs"
+          >
+            Dashboard
+          </Button>
+        </Link>
       ) : <></>}
+
       <Button
         onClick={onClickSignOut}
         colorScheme="gray"

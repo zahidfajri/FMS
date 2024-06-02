@@ -21,9 +21,8 @@ export const commentRouter = createTRPCRouter({
         title: z.string(),
         description: z.string(),
         attachment: z.string().nullable().optional(),
-        isDone: z.boolean().optional(),
-        type: z.enum(["QUESTION", "NEEDFOLLOWUP", "SOLVE"]).default("SOLVE"),
         ticketId: z.number(),
+        createBy: z.string().nullable().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -45,9 +44,7 @@ export const commentRouter = createTRPCRouter({
         title: z.string(),
         description: z.string(),
         attachment: z.string().nullable().optional(),
-        isDone: z.boolean().optional(),
-        type: z.enum(["QUESTION", "NEEDFOLLOWUP", "SOLVE"]).default("SOLVE"),
-        ticketId: z.number().optional(),
+        createBy: z.string().nullable().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -59,7 +56,7 @@ export const commentRouter = createTRPCRouter({
           title: input.title,
           description: input.description,
           attachment: input.attachment,
-          type: input.type,
+          createBy: input.createBy,
         },
       });
 

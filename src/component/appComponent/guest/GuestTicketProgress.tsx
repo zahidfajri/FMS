@@ -27,7 +27,9 @@ export default function GuestTicketProgress({
         <TicketProgressStep
           description={comment.description ?? undefined}
           isInProgress={index === 0 && !isTicketSolved}
-          updatedAt={comment.createdAt}
+          attachment={comment.attachment}
+          updatedAt={comment.updatedAt}
+          createdBy={comment.createBy}
           title={comment.title}
           key={comment.id}
           id={comment.id}

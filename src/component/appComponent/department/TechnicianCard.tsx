@@ -26,10 +26,12 @@ export default function TechnicianCard({
   email,
   name,
   id,
+  phoneNumber,
 }: {
   email: string | null;
   name: string | null;
   id: string;
+  phoneNumber: string;
 }) {
   const activeTicketCount = api.ticket.getCountTicketByUserId.useQuery({
     userId: id,
@@ -44,6 +46,7 @@ export default function TechnicianCard({
   const query = api.useContext().user.getUserByDepartmentId;
   const [tempName, setTempName] = useState(name ?? "");
   const [tempEmail, setTempEmail] = useState(email ?? "");
+  const [tempPhoneNumber, setTempPhoneNumber] = useState(phoneNumber ??"");
   const [errorField, setErrorField] = useState<string[]>([]);
 
   async function onSave() {
@@ -64,6 +67,7 @@ export default function TechnicianCard({
         name: tempName,
         email: tempEmail,
         id,
+        phoneNumber: tempPhoneNumber,
       })
     } catch (e) {
       console.log(e)
@@ -176,6 +180,18 @@ export default function TechnicianCard({
                   onChange={e => setTempEmail(e.target.value)}
                   placeholder="saiful@email.com"
                   value={tempEmail}
+                />
+              </Stack>
+              <Stack>
+                <Text fontWeight={500}>
+                  Phone Number (optional)
+                </Text>
+                <Input
+                  isInvalid={errorField.includes("phoneNumber")}
+                  onChange={e => setTempPhoneNumber(e.target.value)}
+                  placeholder="+6081234567890"
+                  value={phoneNumber}
+                  type="tel"
                 />
               </Stack>
 

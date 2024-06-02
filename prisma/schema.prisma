@@ -101,51 +101,43 @@ enum TicketType {
 
 model Ticket {
   // Identity
-  id         Int         @id @default(autoincrement())
-  email      String
-  name       String
-  title      String
-  subtitle   String
-  attachment String?
-  type       TicketType?
-  code       String      @unique
+  id           Int         @id @default(autoincrement())
+  email        String
+  name         String
+  title        String
+  subtitle     String
+  attachment   String?
+  type         TicketType?
+  code         String      @unique
   // Default
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
   // Detail
-  isSolved   Boolean     @default(false)
-  solvedAt   DateTime?
+  isSolved     Boolean     @default(false)
+  solvedAt     DateTime?
   // Comment
-  comment    Comment[]
-
+  comment      Comment[]
   // Department
   departmentId Int?
   department   Department? @relation(fields: [departmentId], references: [id])
-
-  // Department
-  userId     String?
-  technician User?   @relation(fields: [userId], references: [id])
+  // user
+  userId       String?
+  technician   User?       @relation(fields: [userId], references: [id])
 
   @@index([departmentId])
   @@index([userId])
 }
 
-enum CommentType {
-  QUESTION
-  NEEDFOLLOWUP
-  SOLVE
-}
-
 model Comment {
-  id          Int         @id @default(autoincrement())
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @default(now()) @updatedAt
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
   title       String
   description String?
   attachment  String?
-  type        CommentType @default(QUESTION)
-  ticket      Ticket      @relation(fields: [ticketId], references: [id])
+  ticket      Ticket   @relation(fields: [ticketId], references: [id])
   ticketId    Int
+  createBy    String?
 
   @@index([ticketId])
 }

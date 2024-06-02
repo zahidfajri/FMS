@@ -141,7 +141,7 @@ export default function ModalCreateTechnician({
                   isInvalid={errorField.includes("phoneNumber")}
                   onChange={e => setPhoneNumber(e.target.value)}
                   placeholder="+6081234567890"
-                  value={email}
+                  value={phoneNumber}
                   type="tel"
                 />
               </Stack>
