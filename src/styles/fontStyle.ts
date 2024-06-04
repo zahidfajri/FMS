@@ -180,4 +180,39 @@ const fonts = {
   jakarta: "Plus Jakarta Sans, sans-serif",
 };
 
+type CustomFontStyle = {
+  fontSize?: string;
+  fontWeight?: number;
+  letterSpacing?: string;
+  lineHeight?: string;
+};
+
+export function responsiveFontStyle(
+  small: CustomFontStyle,
+  large: CustomFontStyle
+) {
+  return {
+    fontSize: [
+      small.fontSize ?? null,
+      small.fontSize ?? null,
+      large.fontSize ?? null,
+    ],
+    fontWeight: [
+      small.fontWeight ?? 500,
+      small.fontWeight ?? 500,
+      large.fontWeight ?? 500,
+    ],
+    letterSpacing: [
+      small.letterSpacing ?? null,
+      small.letterSpacing ?? null,
+      large.letterSpacing ?? null,
+    ],
+    lineHeight: [
+      small.lineHeight ?? null,
+      small.lineHeight ?? null,
+      large.lineHeight ?? null,
+    ],
+  };
+}
+
 export default fonts;

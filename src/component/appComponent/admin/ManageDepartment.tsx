@@ -2,19 +2,14 @@ import { Center, HStack, SimpleGrid, Skeleton, Stack, Text } from "@chakra-ui/re
 import { fontStyle } from "~/styles/fontStyle";
 import { api } from "~/utils/api";
 import ModalCreateDepartment from "./ModalCreateDepartment";
-import { useSetRecoilState } from "recoil";
-import { selectedDepartmentRecoil } from "~/utils/recoil";
-import { LS_SELECTED_DEPARTMENT } from "~/utils/constant";
+import { useRouter } from "next/router";
 
 export default function ManageDepartment() {
-
+  const router = useRouter();
   const departments = api.department.departments.useQuery();
-  const setSelectedDepartment = useSetRecoilState(selectedDepartmentRecoil);
 
-  function onSelectDepartment(name: string, id: number) {
-    const temp = { name, id, };
-    setSelectedDepartment(temp);
-    localStorage.setItem(LS_SELECTED_DEPARTMENT, JSON.stringify(temp))
+  function onSelectDepartment(id: number) {
+    router.push(`/admin/department/${id}`)
     return;
   }
 
@@ -41,7 +36,7 @@ export default function ManageDepartment() {
         </Skeleton>
       ) : (
         <SimpleGrid
-          columns={[2, 3, 4]}
+          columns={[1, 2, 4]}
           spacing="20px"
         >
           {departments.data.map(department => (
@@ -49,7 +44,7 @@ export default function ManageDepartment() {
               _hover={{
                 bgColor: "gray.50",
               }}
-              onClick={() => onSelectDepartment(department.name, department.id)}
+              onClick={() => onSelectDepartment(department.id)}
               borderRadius="10px"
               key={department.id}
               borderWidth="1px"

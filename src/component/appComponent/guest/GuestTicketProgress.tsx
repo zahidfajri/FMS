@@ -3,11 +3,16 @@ import Iconify from "../iconify";
 import { fontStyle } from "~/styles/fontStyle";
 import { api } from "~/utils/api";
 import { TicketProgressStep } from "../department/TicketProgressStep";
+import moment from "moment";
 
 export default function GuestTicketProgress({
   ticketId,
+  isTicketSolved = false,
+  createdAt,
 }: {
   ticketId: number;
+  isTicketSolved?: boolean;
+  createdAt: Date,
 }) {
 
   const progress = api.comment.getCommentsByTicketId.useQuery({
@@ -16,21 +21,15 @@ export default function GuestTicketProgress({
 
   const displayedData = progress.data ?? [];
 
-  const inProgressIndex = displayedData.findIndex((comment, index) =>
-    !comment.isDone
-    && (index === displayedData.length - 1 || displayedData[index + 1]?.isDone)
-    && displayedData[index - 1]?.isDone === false
-  );
-
   return (
     <Box>
       {displayedData.map((comment, index) => (
         <TicketProgressStep
-          isInProgress={index === inProgressIndex || (inProgressIndex === -1 && index === displayedData.length - 1)}
           description={comment.description ?? undefined}
-          isSkipped={index > inProgressIndex}
-          isDone={comment.isDone}
-          doneAt={comment.doneAt}
+          isInProgress={index === 0 && !isTicketSolved}
+          attachment={comment.attachment}
+          updatedAt={comment.updatedAt}
+          createdBy={comment.createBy}
           title={comment.title}
           key={comment.id}
           id={comment.id}
@@ -65,7 +64,10 @@ export default function GuestTicketProgress({
           w="100%"
         >
           <Text {...fontStyle.body1extrabold}>
-            Ticket Created
+            Ticket Submitted
+          </Text>
+          <Text {...fontStyle.captionMedium} color="gray.500">
+            On {moment(createdAt).format("H:mm, on DD-MM-YYYY")}
           </Text>
         </Stack>
       </Stack>

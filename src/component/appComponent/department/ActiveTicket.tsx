@@ -46,6 +46,7 @@ export default function ActiveTicket({
       ticketIds: selectedIds,
       userId: selectedUserId,
     });
+    isAssgining.set(false);
     if (!response) {
       toast({
         title: "Something Went Wrong!",
@@ -86,6 +87,7 @@ export default function ActiveTicket({
               ))}
             </Select>
             <Button
+              isLoading={isAssgining.get}
               colorScheme="blue"
               onClick={onAssign}
               size="sm"

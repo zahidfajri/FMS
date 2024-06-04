@@ -23,6 +23,7 @@
   "dependencies": {
     "@chakra-ui/next-js": "^2.2.0",
     "@chakra-ui/react": "^2.5.5",
+    "@dbb-id/standarization": "^1.0.25",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@geoffcox/react-splitter": "^2.1.2",
@@ -40,6 +41,7 @@
     "@types/html-pdf": "^3.0.0",
     "@types/nodemailer": "^6.4.7",
     "@types/react-copy-to-clipboard": "^5.0.7",
+    "@types/react-csv": "^1.1.10",
     "@types/react-splitter-layout": "^3.0.2",
     "@types/uuid": "^9.0.1",
     "@vercel/analytics": "^1.0.0",
@@ -56,6 +58,7 @@
     "postinstall": "^0.8.0",
     "react": "18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
+    "react-csv": "^2.2.2",
     "react-dom": "18.2.0",
     "recoil": "^0.7.7",
     "superjson": "1.12.2",

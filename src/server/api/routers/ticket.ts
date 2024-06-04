@@ -1,11 +1,12 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import {
+  sendBulkAssignTicketEmail,
   sendCreateTicketEmail,
   sendReceiveTicketEmail,
   sendSolveTicketEmail,
+  sendUnassignedTicketEmail,
 } from "../utils/templateEmailHtml";
-import { startDayOfDate } from "~/utils/date";
 
 export const ticketRouter = createTRPCRouter({
   getAllTicket: protectedProcedure.query(async ({ ctx }) => {
@@ -19,14 +20,9 @@ export const ticketRouter = createTRPCRouter({
       },
     });
 
-    const sortedTickets = uanssignedTicket
-      .sort((a, b) => (a.id < b.id ? 1 : -1))
-      .sort((a) =>
-        startDayOfDate(a.lastTechnicianUpdateComment) ===
-        startDayOfDate(new Date())
-          ? 1
-          : -1
-      );
+    const sortedTickets = uanssignedTicket.sort((a, b) =>
+      a.id < b.id ? 1 : -1
+    );
 
     return sortedTickets;
   }),
@@ -41,15 +37,9 @@ export const ticketRouter = createTRPCRouter({
         },
       });
 
-      const sortedTickets = activeTickets
-        .sort((a, b) => (a.id < b.id ? 1 : -1))
-        .sort((a) =>
-          startDayOfDate(a.lastTechnicianUpdateComment) ===
-          startDayOfDate(new Date())
-            ? 1
-            : -1
-        );
-      // sort by when today is not the day of lastTechnicianUpdate
+      const sortedTickets = activeTickets.sort((a, b) =>
+        a.id < b.id ? 1 : -1
+      );
 
       return sortedTickets;
     }),
@@ -102,6 +92,25 @@ export const ticketRouter = createTRPCRouter({
       });
 
       return count;
+    }),
+
+  getTicketsByDepartmentId: protectedProcedure
+    .input(
+      z.object({
+        departmentId: z.number(),
+        monthCode: z.string().max(2),
+        yearCode: z.string().max(2),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.ticket.findMany({
+        where: {
+          departmentId: input.departmentId,
+          code: {
+            startsWith: `${input.yearCode}${input.monthCode}`,
+          },
+        },
+      });
     }),
 
   createTicket: publicProcedure
@@ -173,14 +182,25 @@ export const ticketRouter = createTRPCRouter({
         },
       });
 
-      if (ticket.email && Boolean(ticket.departmentId)) {
+      if (ticket.email) {
         await sendCreateTicketEmail(
           ticket.email,
           ticket.name || "",
           ticket.code
         );
       }
-      if (email) await sendReceiveTicketEmail(ticket.email, ticket.code);
+      if (email) {
+        await sendReceiveTicketEmail(ticket.email, ticket.code);
+      } else {
+        const admin = await ctx.prisma.user.findMany({
+          where: {
+            role: "ADMIN",
+          },
+        });
+        if (admin && admin.length > 0 && admin[0]?.email) {
+          sendUnassignedTicketEmail(admin[0]?.email, ticket.code);
+        }
+      }
       return ticket;
     }),
 
@@ -216,12 +236,17 @@ export const ticketRouter = createTRPCRouter({
         },
         data: {
           isSolved: input.isSolved,
+          solvedAt: new Date(),
         },
       });
       if (!ticket) return null;
 
       if (input.isSolved) {
-        await sendSolveTicketEmail(ticket.email, ticket.name || "", ticket.id);
+        await sendSolveTicketEmail(
+          ticket.email,
+          ticket.name || "",
+          ticket.code
+        );
       }
 
       return ticket;
@@ -255,13 +280,15 @@ export const ticketRouter = createTRPCRouter({
             title: `Assigned to Department ${departmentDestination.name}`,
             ticketId: ticket.id,
             attachment: undefined,
-            type: "SOLVE",
-            isDone: true,
           },
         });
         if (!comment) return null;
 
-        await sendCreateTicketEmail(ticket.email, ticket.name || "", ticket.id);
+        await sendCreateTicketEmail(
+          ticket.email,
+          ticket.name || "",
+          ticket.code
+        );
 
         return await ctx.prisma.ticket.update({
           where: {
@@ -292,8 +319,6 @@ export const ticketRouter = createTRPCRouter({
             title: `Move to Department ${departmentDestination.name}`,
             ticketId: ticket.id,
             attachment: undefined,
-            type: "SOLVE",
-            isDone: true,
           },
         });
         if (!comment) return null;
@@ -317,6 +342,14 @@ export const ticketRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findFirst({
+        where: {
+          id: input.userId,
+        },
+      });
+      if (!user || !user.email || !user.name)
+        throw new Error("Ticket doesn't exist");
+
       for (const ticketId of input.ticketIds) {
         const ticket = await ctx.prisma.ticket.update({
           where: {
@@ -328,6 +361,29 @@ export const ticketRouter = createTRPCRouter({
         });
         if (!ticket) throw new Error("Ticket doesn't exist");
       }
+
+      await sendBulkAssignTicketEmail(
+        user.email,
+        user.name,
+        input.ticketIds.length
+      );
       return true;
+    }),
+
+  getActiveTicketsByTechnicianId: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const tickets = await ctx.prisma.ticket.findMany({
+        where: {
+          userId: input.userId,
+          isSolved: false,
+        },
+      });
+
+      return tickets;
     }),
 });

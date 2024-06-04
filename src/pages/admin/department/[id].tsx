@@ -1,6 +1,5 @@
-import { Center, Skeleton, Text } from "@chakra-ui/react";
+import { Center } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import DepartmentDashboard from "~/component/appComponent/department/DepartmentDashboard";
@@ -18,20 +17,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   });
 };
 
-export default function DepartmentDashboardPage({
+export default function AdminDepartmentDashboardPage({
   id,
 }: {
   id: string;
 }) {
-  isAuthWithRole("TECHNICIAN", "/");
-  const session = useSession();
+  isAuthWithRole("ADMIN", "/admin");
+
+
   const setDepartment = useSetRecoilState(selectedDepartmentRecoil);
 
   const department = api.department.departmentById.useQuery({
     id: Number(id),
   });
-
-  const isGrantedAccess = session.data?.user.email && session.data?.user.email === department.data?.emailPic;
 
   useEffect(() => {
     if (department.data) setDepartment({
@@ -46,17 +44,7 @@ export default function DepartmentDashboardPage({
       p={["0px", "0px", "20px"]}
       minH="100svh"
     >
-      <Skeleton
-        isLoaded={department.isFetched && session.status !== "loading"}
-      >
-        {isGrantedAccess ? (
-          <DepartmentDashboard id={Number(id)} />
-        ) : (
-          <Text color="white">
-            YOU ARE NOT THE PIC
-          </Text>
-        )}
-      </Skeleton>
+      <DepartmentDashboard id={Number(id)} />
     </Center>
   )
 }

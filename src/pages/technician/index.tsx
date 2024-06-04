@@ -11,7 +11,6 @@ export default function LoginPage() {
       <SignInComponent
         redirectSuccess="/technician/dashboard"
         title="Technician Login"
-        isLoaded
       />
     </Center>
   )

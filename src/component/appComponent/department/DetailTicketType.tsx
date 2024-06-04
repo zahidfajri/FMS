@@ -40,8 +40,8 @@ export default function DetailTicketType({
         Make tickets easy to categorize.
       </Text>
       <SimpleGrid
+        columns={[2, 2, 4]}
         spacing="5px"
-        columns={4}
       >
         {(["INQUIRY", "COMPLAINT", "SUGGESTION", "COMPLIMENT"] as const).map(a => (
           <Skeleton

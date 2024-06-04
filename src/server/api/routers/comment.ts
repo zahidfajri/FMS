@@ -11,7 +11,7 @@ export const commentRouter = createTRPCRouter({
         },
       });
 
-      const sortedComments = comments.sort((a, b) => (a < b ? 1 : -1));
+      const sortedComments = comments.sort((a, b) => (a.id < b.id ? 1 : -1));
       return sortedComments;
     }),
 
@@ -21,39 +21,18 @@ export const commentRouter = createTRPCRouter({
         title: z.string(),
         description: z.string(),
         attachment: z.string().nullable().optional(),
-        isDone: z.boolean().optional(),
-        type: z.enum(["QUESTION", "NEEDFOLLOWUP", "SOLVE"]).default("SOLVE"),
         ticketId: z.number(),
+        createBy: z.string().nullable().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       const comment = await ctx.prisma.comment.create({
         data: {
           ...input,
-          isTechnicianReply: true,
         },
       });
 
       if (!comment) return null;
-
-      const ticket = await ctx.prisma.ticket.update({
-        where: {
-          id: input.ticketId,
-        },
-        data: {
-          lastTechnicianUpdateComment: new Date(),
-        },
-      });
-
-      if (!ticket) return null;
-
-      // TODO: TEMPLATE BY STATUS: SOLVING ATAU FOLLOWUP
-      // await sendReplyEmail(
-      //   ticket.email,
-      //   ticket.name || "",
-      //   ticket.id,
-      //   input.description
-      // );
 
       return comment;
     }),
@@ -65,9 +44,7 @@ export const commentRouter = createTRPCRouter({
         title: z.string(),
         description: z.string(),
         attachment: z.string().nullable().optional(),
-        isDone: z.boolean().optional(),
-        type: z.enum(["QUESTION", "NEEDFOLLOWUP", "SOLVE"]).default("SOLVE"),
-        ticketId: z.number().optional(),
+        createBy: z.string().nullable().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -79,25 +56,11 @@ export const commentRouter = createTRPCRouter({
           title: input.title,
           description: input.description,
           attachment: input.attachment,
-          isDone: input.isDone,
-          doneAt: input.isDone ? new Date() : null,
-          type: input.type,
-          isTechnicianReply: true,
+          createBy: input.createBy,
         },
       });
 
       if (!comment) return null;
-
-      const ticket = await ctx.prisma.ticket.update({
-        where: {
-          id: comment.ticketId,
-        },
-        data: {
-          lastTechnicianUpdateComment: new Date(),
-        },
-      });
-
-      if (!ticket) return null;
 
       return comment;
     }),

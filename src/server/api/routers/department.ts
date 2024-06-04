@@ -41,7 +41,7 @@ export const departmentRouter = createTRPCRouter({
         },
       });
 
-      if (user.email !== department?.emailPic) throw new Error("This is not PIC");
+      if (user.email !== department?.emailPic) return null;
 
       return department;
     }),

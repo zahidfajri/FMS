@@ -8,13 +8,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  SimpleGrid,
   Stack,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
+import imgbbUpload from "imgbb-image-uploader";
 import { useState } from "react";
-import SoftCheckbox from "~/component/designSystem/checkbox/soft";
+import InputFile from "~/component/designSystem/input/file";
 import { api } from "~/utils/api";
 import { useBooleanState } from "~/utils/hooks";
 
@@ -23,14 +23,14 @@ export default function ModalUpdateProgress({
   onClose,
   currentTitle,
   currentDescription,
-  isDone,
+  currentAttachment,
   commentId,
 }: {
   isOpen: boolean;
   onClose: () => void;
   currentTitle: string;
   currentDescription: string;
-  isDone: boolean;
+  currentAttachment: string | null;
   commentId: number;
 }) {
   const toast = useToast();
@@ -41,15 +41,44 @@ export default function ModalUpdateProgress({
   const isSaving = useBooleanState();
   const [title, setTitle] = useState(currentTitle);
   const [description, setDescription] = useState(currentDescription);
-  const [status, setStatus] = useState(isDone ? "DONE" : "UNDONE");
+  const [attachmentUrl, setAttachmentUrl] = useState(currentAttachment);
+  const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
 
   async function onClickSave() {
     isSaving.set(true);
+
+    let attachment: null | string = attachmentUrl;
+    if (attachmentFile) {
+      window.onbeforeunload = () => 'You have unsaved changes!';
+      const name = `progress-attachment-${new Date().getTime()}`;
+      let response: any;
+      try {
+        response = await imgbbUpload({
+          key: process.env.NEXT_PUBLIC_IMGBB_CLIENT_API_KEY,
+          image: attachmentFile,
+          name,
+        });
+        attachment = response?.data?.image?.url ?? null;
+      } catch (error) {
+        toast({
+          title: "Upload Failed",
+          description: "Something went wrong while uploading the file.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
+        console.error("Failed to upload image to ImgBB:", error);
+      } finally {
+        window.onbeforeunload = null;
+      }
+    }
+
     const response = await fetchUpdate.mutateAsync({
       commentId,
       title,
       description,
-      isDone: status === "DONE",
+      attachment,
     });
     isSaving.set(false);
     if (!response?.id) return;
@@ -85,21 +114,20 @@ export default function ModalUpdateProgress({
               placeholder="Description of step (optional)"
               value={description}
             />
-            <SimpleGrid
-              spacing="10px"
-              columns={2}
-            >
-              <SoftCheckbox
-                onClick={() => setStatus("UNDONE")}
-                isActive={status === "UNDONE"}
-                title="Not yet done"
+            {attachmentUrl ? (
+              <Button
+                onClick={() => setAttachmentUrl(null)}
+                w="fit-content"
+              >
+                Remove Attachment
+              </Button>
+            ) : (
+              <InputFile
+                buttonText="Attachment Image (optional)"
+                setValue={setAttachmentFile}
+                value={attachmentFile}
               />
-              <SoftCheckbox
-                onClick={() => setStatus("DONE")}
-                isActive={status === "DONE"}
-                title="Done"
-              />
-            </SimpleGrid>
+            )}
           </Stack>
         </ModalBody>
         <ModalFooter>

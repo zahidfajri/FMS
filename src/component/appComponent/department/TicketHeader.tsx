@@ -1,6 +1,6 @@
-import { HStack, Image, Link, Stack, Text, Wrap } from "@chakra-ui/react";
+import { Image, Link, Stack, Tag, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import moment from "moment";
-import { fontStyle } from "~/styles/fontStyle";
+import { fontStyle, responsiveFontStyle } from "~/styles/fontStyle";
 
 export default function TicketHeader({
   title,
@@ -9,6 +9,9 @@ export default function TicketHeader({
   email,
   createdAt,
   attachment,
+  code,
+  isSolved,
+  type,
 }: {
   title: string;
   subtitle: string;
@@ -16,20 +19,66 @@ export default function TicketHeader({
   email: string;
   createdAt: Date | undefined;
   attachment: string | null | undefined;
+  code: string | undefined;
+  isSolved: boolean | undefined;
+  type: string | undefined | null;
 }) {
+
+  function colorBasedOnType() {
+    if (type === "INQUIRY") return "blue"
+    if (type === "COMPLAINT") return "red"
+    if (type === "SUGGESTION") return "yellow"
+    if (type === "COMPLIMENT") return "green"
+  }
+  const colorSchemeTicket = colorBasedOnType();
+
   return (
     <>
       <Stack spacing="20px">
-        <HStack w="100%" justify="space-between">
-          <Text
-            fontSize={["24px", "24px", "48px"]}
-            letterSpacing="0.0025em"
-            fontWeight={700}
-          >
-            {title}
+        {code ? (
+          <Text {...fontStyle.body1bold}>
+            ID #{code}
           </Text>
-        </HStack>
-        <Text {...fontStyle.heading6medium}>
+        ) : <></>}
+        <Wrap>
+          <WrapItem>
+            {isSolved ? (
+              <Tag
+                {...fontStyle.captionBold}
+                colorScheme="green"
+                w="fit-content"
+              >
+                SOLVED
+              </Tag>
+            ) : (
+              <Tag
+                {...fontStyle.captionBold}
+                w="fit-content"
+              >
+                IN PROGRESS
+              </Tag>
+            )}
+          </WrapItem>
+          <WrapItem>
+            <Tag
+              colorScheme={colorSchemeTicket}
+              {...fontStyle.captionBold}
+              w="fit-content"
+            >
+              {type}
+            </Tag>
+          </WrapItem>
+        </Wrap>
+        <Text
+          fontSize={["24px", "24px", "48px"]}
+          letterSpacing="0.0025em"
+          fontWeight={700}
+        >
+          {title}
+        </Text>
+        <Text
+          {...responsiveFontStyle(fontStyle.body1medium, fontStyle.heading6medium)}
+        >
           {subtitle || "Loading..."}
         </Text>
       </Stack>

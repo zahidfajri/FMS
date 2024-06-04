@@ -13,11 +13,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { TicketType } from "@prisma/client";
+import imgbbUpload from "imgbb-image-uploader";
 import { useEffect, useState } from "react";
 import Iconify from "~/component/appComponent/iconify";
 import CustomCheckbox from "~/component/designSystem/checkbox/custom";
+import InputFile from "~/component/designSystem/input/file";
 import LayoutGuest from "~/component/designSystem/layout/Layout";
-import UploadImage from "~/component/designSystem/uploadImage";
 import { fontStyle } from "~/styles/fontStyle";
 import { api } from "~/utils/api";
 import { useBooleanState } from "~/utils/hooks";
@@ -60,7 +61,7 @@ export default function NewTicketPage() {
   // DESCRIBE ISSUE
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
-  const [attachment, setAttachment] = useState("");
+  const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
 
   // IDENTITY REPORTER
   const [name, setName] = useState("");
@@ -102,6 +103,35 @@ export default function NewTicketPage() {
     localStorage.setItem("lastreporter-name", name);
     localStorage.setItem("lastreporter-email", email);
     isSubmitting.set(true);
+
+    let attachment: null | string = null;
+    if (attachmentFile) {
+      window.onbeforeunload = () => 'You have unsaved changes!';
+
+      const name = `ticket-attachment-${new Date().getTime()}`;
+      let response: any;
+      try {
+        response = await imgbbUpload({
+          key: process.env.NEXT_PUBLIC_IMGBB_CLIENT_API_KEY,
+          image: attachmentFile,
+          name,
+        });
+        attachment = response?.data?.image?.url ?? null;
+      } catch (error) {
+        toast({
+          title: "Upload Failed",
+          description: "Something went wrong while uploading the file.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
+        console.error("Failed to upload image to ImgBB:", error);
+      } finally {
+        window.onbeforeunload = null;
+      }
+    }
+
     const response = await submitTicket({
       title,
       subtitle,
@@ -242,9 +272,9 @@ export default function NewTicketPage() {
                 </Text>
               </Stack>
 
-              <UploadImage
-                setValue={setAttachment}
-                value={attachment}
+              <InputFile
+                setValue={setAttachmentFile}
+                value={attachmentFile}
               />
             </Stack>
 
