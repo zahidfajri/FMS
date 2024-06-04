@@ -49,7 +49,7 @@ export default function TrackPage() {
           <Flex />
           <Input
             onChange={e => setCode(e.target.value)}
-            placeholder="Kode tiket, eg. #27"
+            placeholder="Ticket Number, eg. #2406010"
             value={code}
           />
           <Button
