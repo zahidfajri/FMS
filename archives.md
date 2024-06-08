@@ -47,17 +47,17 @@ solved with give tooltip
 
 (done) Can we delete ticket from the web? (in case spam ticket) (p)
 
-Show which department is technician at technician dashboard? (idk if this necessary) (p)
+(done) Show which department is technician at technician dashboard? (idk if this necessary) (p)
 
-Phone number of technician does not shows up on ticket. (p)
+(done) Phone number of technician does not shows up on ticket. (p)
 
-Write max upload photo size 10MB at submit ticket page (p)
+(done) Write max upload photo size 10MB at submit ticket page (p)
 
-BUG PIC technician click a ticket from his/her department dashboard,  it then redirected to create new ticket page? (p)
-
-Add/remove technician/head of technician? (np tp p)
+(done) BUG PIC technician click a ticket from his/her department dashboard,  it then redirected to create new ticket page? (p)
 
 SEARCH TICKET FROM ADMIN (np tp p)
+
+Add/remove technician/head of technician? (np tp p)
 
 SEARCH TECHNICIAN (not that important since there would not be many technician) (np tp p)
 
@@ -67,4 +67,4 @@ I think user also need to add phone number, but is that really necessary? (np)
 
 (???) Maximum string at detail ticket? (5000 char aman)
 
-Pop up notifications still in green color, not blue. (gajadi) (green is go, red is stop/wrong)
+(???) Pop up notifications still in green color, not blue. (gajadi) (green is go, red is stop/wrong)

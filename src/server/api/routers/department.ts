@@ -30,7 +30,7 @@ export const departmentRouter = createTRPCRouter({
       const user = await ctx.prisma.user.findFirst({
         where: {
           id: input.userId,
-        }
+        },
       });
       if (!user) throw new Error("User does not exist");
 
@@ -41,9 +41,10 @@ export const departmentRouter = createTRPCRouter({
         },
       });
 
-      if (user.email !== department?.emailPic) return null;
-
-      return department;
+      return {
+        department,
+        isPIC: user.email === department?.emailPic,
+      };
     }),
 
   createDepartment: protectedProcedure

@@ -1,4 +1,4 @@
-import { Center, Skeleton, Stack, Text, } from "@chakra-ui/react";
+import { Button, Center, Link, Skeleton, Stack, Text, } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import LayoutGuest from "~/component/designSystem/layout/Layout";
 import { api } from "~/utils/api";
@@ -6,6 +6,7 @@ import { getRouterQueryAsString } from "~/utils/router";
 import TicketHeader from "~/component/appComponent/department/TicketHeader";
 import GuestTicketProgress from "~/component/appComponent/guest/GuestTicketProgress";
 import { fontStyle } from "~/styles/fontStyle";
+import Iconify from "~/component/appComponent/iconify";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { code } = context.query;
@@ -33,16 +34,16 @@ export default function TrackIdPage({
         minH="calc(100svh - 80px)"
       >
         <Skeleton
+          borderRadius={["0px", "0px", "10px"]}
           isLoaded={ticket.isFetched}
-          borderRadius="10px"
           maxW="880px"
           w="100%"
         >
           <Stack
-            borderRadius="10px"
+            p={["10px 20px", "10px 20px", "20px 40px"]}
+            borderRadius={["0px", "0px", "10px"]}
             bgColor="white"
             spacing="20px"
-            p="40px"
             w="100%"
           >
             <TicketHeader
@@ -64,6 +65,24 @@ export default function TrackIdPage({
                 ticketId={ticket.data?.id}
               />
             )}
+
+            {ticket.data?.technician?.phoneNumber ? (
+              <Link
+                href={`https://wa.me/${ticket.data?.technician?.phoneNumber.replace("+", "")}?text=${encodeURIComponent(
+                  `Hello Technician! I want to ask something about one of my helpdesk ticket`
+                )}`}
+                isExternal
+              >
+                <Button
+                  leftIcon={<Iconify icon="bxl:whatsapp" />}
+                  colorScheme="whatsapp"
+                  iconSpacing="5px"
+                  size="xs"
+                >
+                  Contact Technician
+                </Button>
+              </Link>
+            ) : <></>}
 
             <Text {...fontStyle.captionRegular}>
               Step and progress will be updated here

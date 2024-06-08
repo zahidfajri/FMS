@@ -50,7 +50,7 @@ export default function DepartmentDashboardPage({
         isLoaded={department.isFetched && session.status !== "loading"}
       >
         {isGrantedAccess ? (
-          <DepartmentDashboard id={Number(id)} />
+          <DepartmentDashboard id={Number(id)} isTechnician />
         ) : (
           <Text color="white">
             YOU ARE NOT THE PIC

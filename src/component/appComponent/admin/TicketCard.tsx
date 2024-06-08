@@ -6,14 +6,16 @@ export default function TicketCard({
   code,
   title,
   subtitle,
+  isTechnician = false,
 }: {
   code: string;
   title: string;
   subtitle: string;
+  isTechnician?: boolean;
 }) {
   return (
     <Link
-      href={`/admin/ticket/${code}`}
+      href={isTechnician ? `/technician/ticket/${code}` : `/admin/ticket/${code}`}
       passHref
     >
       <HStack

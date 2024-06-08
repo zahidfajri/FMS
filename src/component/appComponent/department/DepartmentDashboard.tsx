@@ -8,8 +8,10 @@ import { api } from "~/utils/api";
 
 export default function DepartmentDashboard({
   id,
+  isTechnician = false,
 }: {
   id: number;
+  isTechnician?: boolean;
 }) {
 
   const department = api.department.departmentById.useQuery({
@@ -64,6 +66,7 @@ export default function DepartmentDashboard({
 
           {department && (
             <ActiveTicket
+              isTechnician={isTechnician}
               departmentId={id}
             />
           )}

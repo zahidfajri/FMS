@@ -268,7 +268,7 @@ export default function NewTicketPage() {
                   Attachment
                 </Text>
                 <Text>
-                  You can attach photo of issue (or screenshot), optional.
+                  You can attach photo of issue (or screenshot) with size max 10MB, optional.
                 </Text>
               </Stack>
 

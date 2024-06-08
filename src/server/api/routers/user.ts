@@ -37,14 +37,18 @@ export const userRouter = createTRPCRouter({
           departmentId: input.departmentId,
           password: await hash(input.password),
           username,
-          phoneNumber: input.phoneNumber,
+          phoneNumber: input.phoneNumber?.trim().replace("+", ""),
           role: "TECHNICIAN",
         },
       });
 
       if (!user) throw new Error("Cannot create user");
 
-      await sendCreateTechnicianAccount(input.email, input.name, input.password);
+      await sendCreateTechnicianAccount(
+        input.email,
+        input.name,
+        input.password
+      );
 
       if (input.isPIC) {
         await ctx.prisma.department.update({
@@ -80,6 +84,7 @@ export const userRouter = createTRPCRouter({
           name: input.name,
           email: input.email,
           username,
+          phoneNumber: input.phoneNumber?.trim().replace("+", ""),
         },
       });
 

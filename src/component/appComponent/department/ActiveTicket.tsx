@@ -7,8 +7,10 @@ import { useState } from "react";
 
 export default function ActiveTicket({
   departmentId,
+  isTechnician = false,
 }: {
   departmentId: number;
+  isTechnician?: boolean;
 }) {
 
   const activeTickets = api.ticket.getActiveTicketsByDepartment.useQuery({
@@ -144,6 +146,7 @@ export default function ActiveTicket({
             ))
             : displayedTicket.map(ticket => (
               <TicketCard
+                isTechnician={isTechnician}
                 subtitle={ticket.subtitle}
                 title={ticket.title}
                 code={ticket.code}

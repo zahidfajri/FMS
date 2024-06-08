@@ -206,13 +206,13 @@ export default function TechnicianCard({
               </Stack>
               <Stack>
                 <Text fontWeight={500}>
-                  Phone Number (optional)
+                  Phone Number for WhatsApp (optional)
                 </Text>
                 <Input
                   isInvalid={errorField.includes("phoneNumber")}
                   onChange={e => setTempPhoneNumber(e.target.value)}
                   placeholder="+6081234567890"
-                  value={phoneNumber}
+                  value={tempPhoneNumber}
                   type="tel"
                 />
               </Stack>

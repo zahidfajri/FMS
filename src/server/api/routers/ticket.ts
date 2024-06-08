@@ -85,6 +85,9 @@ export const ticketRouter = createTRPCRouter({
         where: {
           code: input.code,
         },
+        include: {
+          technician: true
+        }
       });
     }),
 
