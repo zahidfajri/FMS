@@ -4,6 +4,7 @@ import { fontStyle } from "~/styles/fontStyle";
 import { NavbarAdmin } from "~/component/designSystem/layout/Navbar";
 import ManageDepartment from "./ManageDepartment";
 import UnassignedTicket from "./UnassignedTicket";
+import AllTickets from "./AllTickets";
 
 export default function AdminDashboard() {
   const session = useSession();
@@ -44,6 +45,9 @@ export default function AdminDashboard() {
           <Flex />
 
           <ManageDepartment />
+          <Flex />
+
+          <AllTickets />
           <Flex />
 
         </Stack>

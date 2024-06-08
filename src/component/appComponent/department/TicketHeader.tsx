@@ -25,10 +25,10 @@ export default function TicketHeader({
 }) {
 
   function colorBasedOnType() {
-    if (type === "INQUIRY") return "blue"
-    if (type === "COMPLAINT") return "red"
-    if (type === "SUGGESTION") return "yellow"
-    if (type === "COMPLIMENT") return "green"
+    if (type === "INQUIRY") return "blue";
+    if (type === "COMPLAINT") return "red";
+    if (type === "SUGGESTION") return "yellow";
+    if (type === "COMPLIMENT") return "green";
   }
   const colorSchemeTicket = colorBasedOnType();
 
@@ -59,15 +59,17 @@ export default function TicketHeader({
               </Tag>
             )}
           </WrapItem>
-          <WrapItem>
-            <Tag
-              colorScheme={colorSchemeTicket}
-              {...fontStyle.captionBold}
-              w="fit-content"
-            >
-              {type}
-            </Tag>
-          </WrapItem>
+          {type ? (
+            <WrapItem>
+              <Tag
+                colorScheme={colorSchemeTicket}
+                {...fontStyle.captionBold}
+                w="fit-content"
+              >
+                {type}
+              </Tag>
+            </WrapItem>
+          ) : <></>}
         </Wrap>
         <Text
           fontSize={["24px", "24px", "48px"]}

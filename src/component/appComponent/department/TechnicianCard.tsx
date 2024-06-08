@@ -109,22 +109,31 @@ export default function TechnicianCard({
           boxSize="40px"
         >
           {isPIC ? (
-            <Iconify
-              borderRadius="5px"
-              color="yellow.400"
-              borderWidth="1px"
-              icon="bxs:star"
-              boxSize="40px"
-            />
-          ) : (
-            <Iconify
-              borderRadius="5px"
-              borderWidth="1px"
-              color="gray.500"
-              icon="bxs:user"
-              boxSize="40px"
-            />
-          )}
+            <Tooltip label={`Head / PIC of Department`} hasArrow>
+              <Flex
+                position="absolute"
+                borderRadius="4px"
+                fontWeight={700}
+                bgColor="white"
+                color="white"
+                bottom="1px"
+                right="1px"
+              >
+                <Iconify
+                  color="yellow.400"
+                  icon="bxs:star"
+                  boxSize="16px"
+                />
+              </Flex>
+            </Tooltip>
+          ) : <></>}
+          <Iconify
+            borderRadius="5px"
+            borderWidth="1px"
+            color="gray.500"
+            icon="bxs:user"
+            boxSize="40px"
+          />
           {displayedCount ? (
             <Tooltip label={`Number of assgined tickets`} hasArrow>
               <Flex

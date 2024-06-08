@@ -186,12 +186,6 @@ export default function DepartmentAnalytics({
                   {data.total}
                 </Text>
                 <Text
-                  display={["none", "none", "flex"]}
-                  {...fontStyle.body1regular}
-                >
-                  monthly ticket are
-                </Text>
-                <Text
                   {...fontStyle.body1bold}
                   letterSpacing="0.5px"
                 >

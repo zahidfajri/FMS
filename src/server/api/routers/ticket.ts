@@ -9,9 +9,43 @@ import {
 } from "../utils/templateEmailHtml";
 
 export const ticketRouter = createTRPCRouter({
-  getAllTicket: protectedProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.ticket.findMany();
-  }),
+  getAllTicket: protectedProcedure
+    .input(
+      z.object({
+        isSolvedOnly: z.boolean().optional().default(true),
+        limit: z.number().optional().default(5),
+        page: z.number().optional().default(0),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.ticket.findMany({
+        where: {
+          isSolved: input.isSolvedOnly ? true : undefined,
+        },
+        take: input.limit,
+        skip: input.page * input.limit,
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          department: true,
+        },
+      });
+    }),
+
+  getCountAllTicket: protectedProcedure
+    .input(
+      z.object({
+        isSolvedOnly: z.boolean().optional().default(true),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.ticket.count({
+        where: {
+          isSolved: input.isSolvedOnly ? true : undefined,
+        },
+      });
+    }),
 
   getUnassignedTicket: protectedProcedure.query(async ({ ctx }) => {
     const uanssignedTicket = await ctx.prisma.ticket.findMany({
@@ -113,6 +147,23 @@ export const ticketRouter = createTRPCRouter({
       });
     }),
 
+  getActiveTicketsByTechnicianId: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const tickets = await ctx.prisma.ticket.findMany({
+        where: {
+          userId: input.userId,
+          isSolved: false,
+        },
+      });
+
+      return tickets;
+    }),
+
   createTicket: publicProcedure
     .input(
       z.object({
@@ -141,17 +192,33 @@ export const ticketRouter = createTRPCRouter({
         59,
         999
       );
-      const ticketCount = await ctx.prisma.ticket.count({
+
+      // Find the highest sequence number for the current month and year
+      const highestTicket = await ctx.prisma.ticket.findFirst({
         where: {
           createdAt: {
             gte: startOfMonth,
             lte: endOfMonth,
           },
+          code: {
+            startsWith: `${yearCode}${monthCode}`,
+          },
+        },
+        orderBy: {
+          code: "desc",
         },
       });
 
-      const sequence = String(ticketCount + 1).padStart(3, "0");
-      const code = `${yearCode}${monthCode}${sequence}`;
+      let sequence = 1;
+      if (highestTicket) {
+        const highestSequence = parseInt(highestTicket.code.slice(-3), 10);
+        sequence = highestSequence + 1;
+      }
+
+      const code = `${yearCode}${monthCode}${String(sequence).padStart(
+        3,
+        "0"
+      )}`;
 
       let userId: string | null = null;
       let email: string | null = null;
@@ -204,7 +271,7 @@ export const ticketRouter = createTRPCRouter({
       return ticket;
     }),
 
-  updateTicketType: publicProcedure
+  updateTicketType: protectedProcedure
     .input(
       z.object({
         ticketId: z.number(),
@@ -222,7 +289,7 @@ export const ticketRouter = createTRPCRouter({
       });
     }),
 
-  updateTicketStatus: publicProcedure
+  updateTicketStatus: protectedProcedure
     .input(
       z.object({
         ticketId: z.number(),
@@ -252,7 +319,7 @@ export const ticketRouter = createTRPCRouter({
       return ticket;
     }),
 
-  updateTicketDepartment: publicProcedure
+  updateTicketDepartment: protectedProcedure
     .input(
       z.object({
         ticketId: z.number(),
@@ -277,7 +344,7 @@ export const ticketRouter = createTRPCRouter({
 
         const comment = await ctx.prisma.comment.create({
           data: {
-            title: `Assigned to Department ${departmentDestination.name}`,
+            title: `Assigned to ${departmentDestination.name}`,
             ticketId: ticket.id,
             attachment: undefined,
           },
@@ -334,7 +401,33 @@ export const ticketRouter = createTRPCRouter({
       }
     }),
 
-  bulkAssignTicket: publicProcedure
+  deleteTicket: protectedProcedure
+    .input(
+      z.object({
+        ticketId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const ticket = await ctx.prisma.ticket.findUnique({
+        where: {
+          id: input.ticketId,
+        },
+      });
+
+      if (!ticket) {
+        throw new Error("Ticket not found");
+      }
+
+      await ctx.prisma.ticket.delete({
+        where: {
+          id: input.ticketId,
+        },
+      });
+
+      return { message: "Ticket deleted successfully" };
+    }),
+
+  bulkAssignTicket: protectedProcedure
     .input(
       z.object({
         ticketIds: z.array(z.number()),
@@ -368,22 +461,5 @@ export const ticketRouter = createTRPCRouter({
         input.ticketIds.length
       );
       return true;
-    }),
-
-  getActiveTicketsByTechnicianId: protectedProcedure
-    .input(
-      z.object({
-        userId: z.string(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      const tickets = await ctx.prisma.ticket.findMany({
-        where: {
-          userId: input.userId,
-          isSolved: false,
-        },
-      });
-
-      return tickets;
     }),
 });
