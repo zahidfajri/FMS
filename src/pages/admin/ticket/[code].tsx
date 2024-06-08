@@ -5,16 +5,14 @@ import {
   SimpleGrid,
   Skeleton,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
-import TicketCard from "~/component/appComponent/admin/TicketCard";
+import NextTicket from "~/component/appComponent/admin/NextTicket";
 import AddTicketProgress from "~/component/appComponent/department/AddCommentProgression";
 import DetailTicket from "~/component/appComponent/department/DetailTicket";
 import TicketHeader from "~/component/appComponent/department/TicketHeader";
 import TicketProgress from "~/component/appComponent/department/TicketProgress";
 import { NavbarAdmin } from "~/component/designSystem/layout/Navbar";
-import { fontStyle } from "~/styles/fontStyle";
 import { api } from "~/utils/api";
 import { isAuthWithRole } from "~/utils/authenticationCheck";
 import { getRouterQueryAsString } from "~/utils/router";
@@ -36,10 +34,6 @@ export default function AdminReplyPage({
   isAuthWithRole("ADMIN", "/");
 
   const ticket = api.ticket.getTicketByCode.useQuery({
-    code,
-  });
-
-  const nextTicket = api.ticket.getNextActiveTicketByCode.useQuery({
     code,
   });
 
@@ -108,22 +102,7 @@ export default function AdminReplyPage({
                   />
                 )}
 
-                {nextTicket.data ? (
-                  <Stack spacing="5px">
-                    <Text
-                      {...fontStyle.body1bold}
-                      color="blue.500"
-                    >
-                      Next Suggested Ticket
-                    </Text>
-                    <TicketCard
-                      subtitle={nextTicket.data.subtitle}
-                      title={nextTicket.data.title}
-                      code={nextTicket.data.code}
-                    />
-                  </Stack>
-                ) : <></>}
-
+                <NextTicket code={code} />
 
               </Stack>
             </SimpleGrid>

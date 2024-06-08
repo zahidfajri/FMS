@@ -45,7 +45,7 @@ solved with give tooltip
 
 (done) Solved ticket history? (p -admin)
 
-(on going BE) Can we delete ticket from the web? (in case spam ticket) (p)
+(done) Can we delete ticket from the web? (in case spam ticket) (p)
 
 Show which department is technician at technician dashboard? (idk if this necessary) (p)
 

@@ -4,6 +4,8 @@ import { fontStyle } from "~/styles/fontStyle";
 import DetailTicketType from "./DetailTicketType";
 import DetailTicketDepartment from "./DetailTicketDepartment";
 import DetailTicketSolve from "./DetailTicketSolve";
+import { useSession } from "next-auth/react";
+import DeleteTicketButton from "../admin/DeleteTicket";
 
 export default function DetailTicket({
   ticketId,
@@ -20,6 +22,8 @@ export default function DetailTicket({
   isSolved?: boolean;
   isTechnician?: boolean;
 }) {
+
+  const session = useSession();
 
   return (
     <Stack
@@ -40,7 +44,6 @@ export default function DetailTicket({
         type={type}
       />
 
-
       {!isTechnician ? (
         <>
           <Divider />
@@ -58,6 +61,14 @@ export default function DetailTicket({
         ticketId={ticketId}
         isSolved={isSolved}
       />
+
+      {session.data?.user.role === "ADMIN" ? (
+        <>
+          <Divider />
+          <DeleteTicketButton ticketId={ticketId} />
+        </>
+      ) : <></>}
+
     </Stack>
   )
 }
