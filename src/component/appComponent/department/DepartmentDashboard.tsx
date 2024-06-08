@@ -1,11 +1,10 @@
 import { Box, Divider, Flex, Stack, Text } from "@chakra-ui/react";
 import { fontStyle } from "~/styles/fontStyle";
 import { NavbarAdmin } from "~/component/designSystem/layout/Navbar";
-import { useRecoilValue } from "recoil";
-import { selectedDepartmentRecoil } from "~/utils/recoil";
 import ActiveTicket from "./ActiveTicket";
 import ManageTechnician from "./ManageTechnician";
 import DepartmentAnalytics from "./DepartmentAnalytics";
+import { api } from "~/utils/api";
 
 export default function DepartmentDashboard({
   id,
@@ -13,7 +12,9 @@ export default function DepartmentDashboard({
   id: number;
 }) {
 
-  const department = useRecoilValue(selectedDepartmentRecoil);
+  const department = api.department.departmentById.useQuery({
+    id,
+  });
 
   return (
     <>
@@ -32,18 +33,20 @@ export default function DepartmentDashboard({
 
           <Stack spacing="0px">
             <Text
-              fontSize={["24px", "24px", "48px"]}
+              fontSize={["16px", "24px", "48px"]}
               letterSpacing="0.0025em"
               fontWeight={700}
             >
-              {department?.name}
+              {department.data?.name}
             </Text>
-            <Text
-              {...fontStyle.body1semibold}
-              color="blue.500"
-            >
-              Watch progression of department ticket.
-            </Text>
+            {department.data?.description ? (
+              <Text
+                {...fontStyle.body1semibold}
+                color="blue.500"
+              >
+                {department.data?.description}
+              </Text>
+            ) : <></>}
           </Stack>
 
           <DepartmentAnalytics id={id} />
@@ -52,7 +55,8 @@ export default function DepartmentDashboard({
 
           {department && (
             <ManageTechnician
-              departmentId={department.id}
+              emailPIC={department.data?.emailPic}
+              departmentId={id}
             />
           )}
 
@@ -60,7 +64,7 @@ export default function DepartmentDashboard({
 
           {department && (
             <ActiveTicket
-              departmentId={department.id}
+              departmentId={id}
             />
           )}
 

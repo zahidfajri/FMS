@@ -6,8 +6,10 @@ import ModalCreateTechnician from "./ModalCreateTechnician";
 
 export default function ManageTechnician({
   departmentId,
+  emailPIC,
 }: {
   departmentId: number;
+  emailPIC: string | null | undefined;
 }) {
 
   const technicians = api.user.getUserByDepartmentId.useQuery({
@@ -43,6 +45,7 @@ export default function ManageTechnician({
           {technicians.data.map(technician => (
             <TechnicianCard
               phoneNumber={technician.phoneNumber ?? ""}
+              isPIC={emailPIC === technician.email}
               email={technician.email}
               name={technician.name}
               key={technician.id}

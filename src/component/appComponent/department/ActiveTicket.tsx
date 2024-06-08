@@ -75,8 +75,8 @@ export default function ActiveTicket({
           <HStack>
             <Select
               onChange={e => setSelectedUserId(e.target.value)}
+              placeholder="Choose Technician"
               value={selectedUserId}
-              placeholder="Choose PIC"
               maxW="200px"
               size="sm"
             >

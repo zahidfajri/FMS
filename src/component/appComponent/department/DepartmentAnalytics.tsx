@@ -27,35 +27,37 @@ export default function DepartmentAnalytics({
     monthCode: monthReference,
     yearCode: yearReference,
   });
-  const totalTicket = tickets.data?.length ?? 1;
+  const totalTicket = tickets.data?.length ?? 0;
   const totalInquiry = tickets.data?.filter(ticket => ticket.type === "INQUIRY").length ?? 0;
   const totalComplaint = tickets.data?.filter(ticket => ticket.type === "COMPLAINT").length ?? 0;
   const totalSuggestion = tickets.data?.filter(ticket => ticket.type === "SUGGESTION").length ?? 0;
   const totalCompliment = tickets.data?.filter(ticket => ticket.type === "COMPLIMENT").length ?? 0;
+  const totalUntyped = tickets.data?.filter(ticket => ticket.type === null).length ?? 0;
   const datas = [
     {
       title: "INQUIRY",
       bgColor: "blue.500",
       total: totalInquiry,
-      // percentage: roundedNumber((totalInquiry / totalTicket) * 100, 2),
     },
     {
       title: "COMPLAINT",
       bgColor: "red.500",
       total: totalComplaint,
-      // percentage: roundedNumber((totalComplaint / totalTicket) * 100, 2),
     },
     {
       title: "SUGGESTION",
       bgColor: "yellow.500",
       total: totalSuggestion,
-      // percentage: roundedNumber((totalSuggestion / totalTicket) * 100, 2),
     },
     {
       title: "COMPLIMENT",
       bgColor: "green.500",
       total: totalCompliment,
-      // percentage: roundedNumber((totalCompliment / totalTicket) * 100, 2),
+    },
+    {
+      title: "NO TYPE",
+      bgColor: "gray.700",
+      total: totalUntyped,
     },
   ];
 
@@ -109,11 +111,18 @@ export default function DepartmentAnalytics({
           </Button>
         </CSVLink>
       </Stack>
-      <Stack direction={["column", "column", "row"]}>
+      <Stack
+        alignItems={["start", "start", "center"]}
+        direction={["column", "column", "row"]}
+      >
+        <Text {...fontStyle.heading6bold}>
+          Month:
+        </Text>
         <Select
           onChange={e => setMonthReference(e.target.value)}
           value={monthReference}
           w="fit-content"
+          size="lg"
         >
           {monthsName.map(month => (
             <option value={month.code} key={month.code}>
@@ -125,6 +134,7 @@ export default function DepartmentAnalytics({
           onChange={e => setYearReference(e.target.value)}
           value={yearReference}
           w="fit-content"
+          size="lg"
         >
           {yearsStock.map(year => (
             <option value={year.toString().slice(2)} key={year}>
@@ -133,6 +143,24 @@ export default function DepartmentAnalytics({
           ))}
         </Select>
       </Stack>
+      <Text {...fontStyle.body1medium}>
+        There {totalTicket === 1 ? "is" : "are"}{" "}
+        <Text
+          fontWeight={800}
+          fontSize="18px"
+          as="span"
+        >
+          {totalTicket === 0 ? "no" : totalTicket}
+        </Text>{" "}
+        tickets on{" "}
+        <Text
+          fontWeight={800}
+          fontSize="18px"
+          as="span"
+        >
+          {monthsName.find(mn => mn.code === monthReference)?.name} {yearsStock.find(ys => ys.toString().slice(2) === yearReference)}
+        </Text> that consist of,
+      </Text>
       <Wrap>
         {datas.map((data) => (
           <WrapItem
@@ -149,16 +177,18 @@ export default function DepartmentAnalytics({
             >
               <Stack
                 alignItems="center"
+                textAlign="center"
                 color="white"
                 p="20px"
                 w="100%"
               >
                 <Text {...fontStyle.heading4extrabold}>
-                  {data.total} <Text as="span" {...fontStyle.body1regular}>
-                    / {totalTicket}
-                  </Text>
+                  {data.total}
                 </Text>
-                <Text {...fontStyle.body1regular}>
+                <Text
+                  display={["none", "none", "flex"]}
+                  {...fontStyle.body1regular}
+                >
                   monthly ticket are
                 </Text>
                 <Text

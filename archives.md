@@ -89,3 +89,44 @@ teknisi ditambah nomor HP
 (done) file cvs download error?
 
 (done, yes) does technician receive email once he/she got assigned?
+
+--- 4/6/24
+
+(done) Department description not big enough (too small) at the admin dashboard (np)
+solved with give tooltip
+
+(done) Also put the description of respective department on each department dashboard (p)
+
+(done) Show total ticket at the bottom/somewhere else. don’t mix on each ticket type (p)
+
+(done) In admin page, I cant see who is the normal technician and head of technician? (p)
+
+(done) “Your issue successfully submitted” change to “Your Ticket Has Successfully Submitted” (email create ticket) (p)
+
+“assign to department environmental department” status at add step after move ticket to a department manually from admin dashboard (p)
+
+Solved ticket history? (p -admin)
+
+Can we delete ticket from the web? (in case spam ticket) (p)
+
+Show which department is technician at technician dashboard? (idk if this necessary) (p)
+
+Phone number of technician does not shows up on ticket. (p)
+
+Write max upload photo size 10MB at submit ticket page (p)
+
+BUG PIC technician click a ticket from his/her department dashboard,  it then redirected to create new ticket page? (p)
+
+Add/remove technician/head of technician? (np tp p)
+
+SEARCH TICKET FROM ADMIN (np tp p)
+
+SEARCH TECHNICIAN (not that important since there would not be many technician) (np tp p)
+
+Sort ticket (np)
+
+I think user also need to add phone number, but is that really necessary? (np)
+
+(???) Maximum string at detail ticket? (5000 char aman)
+
+Pop up notifications still in green color, not blue. (gajadi) (green is go, red is stop/wrong)

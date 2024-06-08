@@ -27,11 +27,13 @@ export default function TechnicianCard({
   name,
   id,
   phoneNumber,
+  isPIC = false,
 }: {
   email: string | null;
   name: string | null;
   id: string;
   phoneNumber: string;
+  isPIC?: boolean;
 }) {
   const activeTicketCount = api.ticket.getCountTicketByUserId.useQuery({
     userId: id,
@@ -46,7 +48,7 @@ export default function TechnicianCard({
   const query = api.useContext().user.getUserByDepartmentId;
   const [tempName, setTempName] = useState(name ?? "");
   const [tempEmail, setTempEmail] = useState(email ?? "");
-  const [tempPhoneNumber, setTempPhoneNumber] = useState(phoneNumber ??"");
+  const [tempPhoneNumber, setTempPhoneNumber] = useState(phoneNumber ?? "");
   const [errorField, setErrorField] = useState<string[]>([]);
 
   async function onSave() {
@@ -93,6 +95,7 @@ export default function TechnicianCard({
         }}
         onClick={() => onOpen()}
         borderRadius="10px"
+        position="relative"
         borderWidth="1px"
         userSelect="none"
         overflow="hidden"
@@ -105,13 +108,23 @@ export default function TechnicianCard({
           flexShrink={0}
           boxSize="40px"
         >
-          <Iconify
-            borderRadius="5px"
-            borderWidth="1px"
-            color="gray.500"
-            icon="bxs:user"
-            boxSize="40px"
-          />
+          {isPIC ? (
+            <Iconify
+              borderRadius="5px"
+              color="yellow.400"
+              borderWidth="1px"
+              icon="bxs:star"
+              boxSize="40px"
+            />
+          ) : (
+            <Iconify
+              borderRadius="5px"
+              borderWidth="1px"
+              color="gray.500"
+              icon="bxs:user"
+              boxSize="40px"
+            />
+          )}
           {displayedCount ? (
             <Tooltip label={`Number of assgined tickets`} hasArrow>
               <Flex
@@ -200,7 +213,7 @@ export default function TechnicianCard({
               </Text>
 
               <Text {...fontStyle.captionRegular}>
-                **To find who is PIC, see the email on department data.
+                **To setting who is PIC, change the PIC email on department data.
               </Text>
 
             </Stack>
