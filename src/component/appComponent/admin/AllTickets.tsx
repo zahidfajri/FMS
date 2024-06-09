@@ -1,8 +1,9 @@
 import {
   Checkbox,
-  HStack,
+  Input,
   Link,
   Skeleton,
+  Spacer,
   Stack,
   Table,
   TableContainer,
@@ -17,29 +18,87 @@ import { fontStyle } from "@dbb-id/standarization";
 import AdminPaginationFooter from "./AdminPaginationFooter";
 import { api } from "~/utils/api";
 import { usePagination } from "~/utils/pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AllTickets() {
+  function useSearchWithCooldownState(cooldown: number = 200) {
+    const [tempSearchKeyword, setTempSearchKeyword] = useState("");
+    const [get, setSearchKeyword] = useState("");
+    function set(value: string) {
+      setTempSearchKeyword(value);
+      setSearchKeyword(value);
+    }
+    function reset() {
+      set("");
+    }
+    const [isCooldown, setIsCooldown] = useState(false);
+    useEffect(() => {
+      if (isCooldown) {
+        const cooldownTimeout = setTimeout(() => {
+          setSearchKeyword(tempSearchKeyword);
+          setIsCooldown(false);
+        }, cooldown);
+        return () => clearTimeout(cooldownTimeout);
+      }
+    }, [isCooldown, tempSearchKeyword]);
+    const handleChangeKeyword = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setTempSearchKeyword(event.target.value);
+      setIsCooldown(true);
+    };
+    return {
+      get,
+      set,
+      reset,
+      props: {
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+          handleChangeKeyword(e),
+        value: tempSearchKeyword,
+      },
+    };
+  }
 
+  const search = useSearchWithCooldownState();
   const [isSolvedOnly, setIsSolvedOnly] = useState(false);
 
   const countAllTicket = api.ticket.getCountAllTicket.useQuery({
-    isSolvedOnly: isSolvedOnly
+    isSolvedOnly: isSolvedOnly,
+    search: search.get,
   });
   const pagination = usePagination(countAllTicket.data ?? 0);
 
   const tickets = api.ticket.getAllTicket.useQuery({
     isSolvedOnly: isSolvedOnly,
     limit: pagination.currentLimit,
-    page: pagination.currentPage
+    page: pagination.currentPage,
+    search: search.get,
   });
 
+  useEffect(() => {
+    pagination.reset();
+  }, [countAllTicket.data])
+
   return (
-    <Stack>
-      <HStack w="100%" justify="space-between">
+    <Stack spacing="10px">
+      <Stack>
         <Text {...fontStyle.heading6bold}>
           All Ticket
         </Text>
+        <Text>
+          Showing <Text as="span" fontWeight={700}>{countAllTicket.data ?? 0}</Text> tickets.
+        </Text>
+      </Stack>
+      <Stack
+        direction={["column", "column", "row"]}
+        w="100%"
+      >
+        <Input
+          placeholder="Search ticket..."
+          {...search.props}
+          type="search"
+          maxW="200px"
+          size="sm"
+        />
+        <Spacer />
         <Checkbox
           onChange={e => setIsSolvedOnly(e.target.checked)}
           isChecked={isSolvedOnly}
@@ -48,7 +107,7 @@ export default function AllTickets() {
             Show Solved Only
           </Text>
         </Checkbox>
-      </HStack>
+      </Stack>
       <TableContainer>
         <Table variant="striped">
           <Thead>

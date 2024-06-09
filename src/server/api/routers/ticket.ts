@@ -15,12 +15,25 @@ export const ticketRouter = createTRPCRouter({
         isSolvedOnly: z.boolean().optional().default(true),
         limit: z.number().optional().default(5),
         page: z.number().optional().default(0),
+        search: z.string().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.ticket.findMany({
         where: {
-          isSolved: input.isSolvedOnly ? true : undefined,
+          AND: [
+            input.search
+              ? {
+                  OR: [
+                    { code: { contains: input.search, mode: "insensitive" } },
+                    { title: { contains: input.search, mode: "insensitive" } },
+                    { name: { contains: input.search, mode: "insensitive" } },
+                    { email: { contains: input.search, mode: "insensitive" } },
+                  ],
+                }
+              : {},
+            { isSolved: input.isSolvedOnly ? true : undefined },
+          ],
         },
         take: input.limit,
         skip: input.page * input.limit,
@@ -37,12 +50,25 @@ export const ticketRouter = createTRPCRouter({
     .input(
       z.object({
         isSolvedOnly: z.boolean().optional().default(true),
+        search: z.string().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.ticket.count({
         where: {
-          isSolved: input.isSolvedOnly ? true : undefined,
+          AND: [
+            input.search
+              ? {
+                  OR: [
+                    { code: { contains: input.search, mode: "insensitive" } },
+                    { title: { contains: input.search, mode: "insensitive" } },
+                    { name: { contains: input.search, mode: "insensitive" } },
+                    { email: { contains: input.search, mode: "insensitive" } },
+                  ],
+                }
+              : {},
+            { isSolved: input.isSolvedOnly ? true : undefined },
+          ],
         },
       });
     }),
@@ -86,8 +112,8 @@ export const ticketRouter = createTRPCRouter({
           code: input.code,
         },
         include: {
-          technician: true
-        }
+          technician: true,
+        },
       });
     }),
 

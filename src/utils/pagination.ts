@@ -36,6 +36,7 @@ export const usePagination = (
     clientValidate: (index: number) =>
       Math.floor(index / parseInt(numberDisplayed, 10)) === pageIndex,
     props,
+    reset: () => changePage(0),
   };
 };
 
