@@ -12,7 +12,7 @@ export async function sendCreateTicketEmail(
   ticketCode: string
 ) {
   const html = getTemplateEmail({
-    header: "Your Issue Has Successfully Submitted",
+    header: "Your Ticket Has Successfully Submitted",
     body: `Thank you, ${name}! Your ticket (with ID #${ticketCode}) was successfully recorded on our system.
       We will inform you back when the ticket is solved or need any follow up.`,
     hyperlink: {
