@@ -78,12 +78,22 @@ export function getTemplateEmail({
                         ${hyperlink.title}
                       </p>
                       <a href="${hyperlink.link}">
-                        Klik disini
+                        Click Here
                       </a>
                     </td>
                   </tr>`
                       : ""
                   }
+                  <tr>
+                    <td style="height:40px;">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0 35px;">
+                      <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
+                        Northport Malaysia Bhd 2024
+                      </p>
+                    </td>
+                  </tr>
                   <tr>
                     <td style="height:40px;">&nbsp;</td>
                   </tr>

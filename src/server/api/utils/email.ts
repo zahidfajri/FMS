@@ -55,7 +55,7 @@ export async function sendEmail(
 
   // send mail with defined transport object
   const info = await transporter.sendMail({
-    from: `"Help Desk" <${process.env.EMAIL_USER}>`, // sender address
+    from: `"Help Desk (Northport Malaysia Bhd)" <${process.env.EMAIL_USER}>`, // sender address
     to: to, // list of receivers
     subject, // Subject line
     html, // html body
