@@ -135,7 +135,7 @@ model Comment {
   title       String
   description String?
   attachment  String?
-  ticket      Ticket   @relation(fields: [ticketId], references: [id])
+  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   ticketId    Int
   createBy    String?
 
