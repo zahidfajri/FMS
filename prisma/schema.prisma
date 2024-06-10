@@ -63,7 +63,7 @@ model User {
   phoneNumber   String?
   // Relation
   departmentId  Int?
-  department    Department? @relation(fields: [departmentId], references: [id])
+  department    Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
   ticket        Ticket[]
 
   accounts Account[]
@@ -122,7 +122,7 @@ model Ticket {
   department   Department? @relation(fields: [departmentId], references: [id])
   // user
   userId       String?
-  technician   User?       @relation(fields: [userId], references: [id])
+  technician   User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([departmentId])
   @@index([userId])
