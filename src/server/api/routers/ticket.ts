@@ -250,7 +250,7 @@ export const ticketRouter = createTRPCRouter({
       )}`;
 
       let userId: string | null = null;
-      let email: string | null = null;
+      let technicianEmail: string | null = null;
       if (input.departmentId) {
         const department = await ctx.prisma.department.findFirst({
           where: {
@@ -265,7 +265,7 @@ export const ticketRouter = createTRPCRouter({
           });
           if (user) {
             userId = user.id;
-            email = user.email;
+            technicianEmail = user.email;
           }
         }
       }
@@ -285,16 +285,17 @@ export const ticketRouter = createTRPCRouter({
           ticket.code
         );
       }
-      if (email) {
-        await sendReceiveTicketEmail(ticket.email, ticket.code);
+
+      if (technicianEmail) {
+        await sendReceiveTicketEmail(technicianEmail, ticket.code);
       } else {
-        const admin = await ctx.prisma.user.findMany({
+        const admin = await ctx.prisma.user.findFirst({
           where: {
             role: "ADMIN",
           },
         });
-        if (admin && admin.length > 0 && admin[0]?.email) {
-          sendUnassignedTicketEmail(admin[0]?.email, ticket.code);
+        if (admin && admin.email) {
+          sendUnassignedTicketEmail(admin.email, ticket.code);
         }
       }
       return ticket;
