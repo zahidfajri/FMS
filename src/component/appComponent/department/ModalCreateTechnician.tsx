@@ -135,7 +135,7 @@ export default function ModalCreateTechnician({
               </Stack>
               <Stack>
                 <Text fontWeight={500}>
-                  Phone Number for WhatsApp (optional)
+                  Phone Number for WhatsApp 
                 </Text>
                 <Input
                   isInvalid={errorField.includes("phoneNumber")}
