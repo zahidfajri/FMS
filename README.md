@@ -1,2 +1,2 @@
-# Helpdesk
-Simple help desk with NextJs: Typescript, tRPC, Chakra UI
+# Helpdesk FMS Northport Malaysia Bhd
+Final Year Project Zahid Fajri Ramadhan 17216872/1
